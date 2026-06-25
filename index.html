@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Practical Guide to Quantitative Finance Interviews</title>
+    <link rel="stylesheet" href="styles.css">
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+    <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+    <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
+
+    <nav class="sidebar">
+        <div class="sidebar-header">
+            <h2><a href="index.html">A Practical Guide to Quantitative Finance Interviews</a></h2>
+        </div>
+        <div class="sidebar-nav">
+            <ul>
+                <li><a href="index.html" class="active">首页</a></li>
+                <li class="chapter-title">章节目录</li>
+                <li><a href="chapter1.html">第1章 一般原则</a></li>
+                <li><a href="chapter2.html">第2章 智力题</a></li>
+                <li><a href="chapter3.html">第3章 微积分与线性代数</a></li>
+                <li><a href="chapter4.html">第4章 概率论</a></li>
+                <li><a href="chapter5.html">第5章 随机过程与随机微积分</a></li>
+                <li><a href="chapter6.html">第6章 金融</a></li>
+                <li><a href="chapter7.html">第7章 算法与数值方法</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="content">
+        <!-- Hero Section -->
+        <div class="hero">
+            <h1>A Practical Guide to Quantitative Finance Interviews</h1>
+            <p class="subtitle">A Practical Guide to Quantitative Finance Interviews</p>
+            <p class="meta">作者：Xinfeng Zhou | 编辑：Brett Jiu | 第一版</p>
+        </div>
+
+        <!-- Preface -->
+        <section class="preface">
+            <h2>前言</h2>
+            <p>本书将帮助你准备量化金融面试（Quantitative Finance Interviews），让你聚焦于此类面试中经常测试的关键概念。在本书中，我们分析了超过200道<em>真实</em>面试题的解法，并提供关于如何在量化面试中脱颖而出的宝贵见解。本书涵盖了你在量化面试中可能遇到的各类主题：智力题、微积分、线性代数、概率论、随机过程与随机微积分、金融和编程。</p>
+            <p>希望在量化金融或相关领域发展职业的专业人士和学生将从本书的深入阅读中获益最多。近年来，投资银行、投资管理公司、对冲基金、金融软件供应商和金融咨询公司对具有强大量化技能的人才需求激增。因此，"宽客"（Quant）——一个涵盖量化分析师、量化研究员、量化策略师、量化交易员和量化开发人员的统称——已经成为一个极具吸引力的职业选择。</p>
+            <p>量化面试涵盖广泛的数学、金融和编程主题，候选人可能在日常工作或学习中从未使用过甚至接触过这些内容。此外，大多数面试题需要强大的解题能力，不仅仅是背诵公式或进行简单计算。成功的候选人需要知识与解题能力的结合才能在量化面试中出色发挥。这正是本书提供的内容！</p>
+            <p>我也强烈建议你在阅读答案之前先自己尝试解决每个问题。自己推导解决方案将帮助你提高解题能力，并帮助你快速识别解决量化问题的常见方法。</p>
+        </section>
+
+        <!-- Table of Contents -->
+        <section class="toc-section">
+            <h2>目录</h2>
+            <ul>
+                <!-- Chapter 1 -->
+                <li>
+                    <div class="toc-chapter"><a href="chapter1.html">第1章 一般原则（General Principles）</a></div>
+                    <ul class="toc-items">
+                        <li><a href="chapter1.html#principle1">1. 建立广泛的知识基础</a></li>
+                        <li><a href="chapter1.html#principle2">2. 练习面试技巧</a></li>
+                        <li><a href="chapter1.html#principle3">3. 仔细倾听</a></li>
+                        <li><a href="chapter1.html#principle4">4. 说出你的想法</a></li>
+                        <li><a href="chapter1.html#principle5">5. 做出合理的假设</a></li>
+                    </ul>
+                </li>
+
+                <!-- Chapter 2 -->
+                <li>
+                    <div class="toc-chapter"><a href="chapter2.html">第2章 智力题（Brain Teasers）</a></div>
+                    <ul class="toc-items">
+                        <li><a href="chapter2.html#section-2-1">2.1 问题简化（Problem Simplification）</a></li>
+                        <li><a href="chapter2.html#section-2-2">2.2 逻辑推理（Logic Reasoning）</a></li>
+                        <li><a href="chapter2.html#section-2-3">2.3 跳出思维定式（Thinking Out of the Box）</a></li>
+                        <li><a href="chapter2.html#section-2-4">2.4 对称性的应用（Application of Symmetry）</a></li>
+                        <li><a href="chapter2.html#section-2-5">2.5 级数求和（Series Summation）</a></li>
+                        <li><a href="chapter2.html#section-2-6">2.6 鸽巢原理（The Pigeon Hole Principle）</a></li>
+                        <li><a href="chapter2.html#section-2-7">2.7 模运算（Modular Arithmetic）</a></li>
+                        <li><a href="chapter2.html#section-2-8">2.8 数学归纳法（Math Induction）</a></li>
+                        <li><a href="chapter2.html#section-2-9">2.9 反证法（Proof by Contradiction）</a></li>
+                    </ul>
+                </li>
+
+                <!-- Chapter 3 -->
+                <li>
+                    <div class="toc-chapter"><a href="chapter3.html">第3章 微积分与线性代数（Calculus and Linear Algebra）</a></div>
+                    <ul class="toc-items">
+                        <li><a href="chapter3.html#sec-3-1">3.1 极限与导数（Limits and Derivatives）</a></li>
+                        <li><a href="chapter3.html#sec-3-2">3.2 积分（Integration）</a></li>
+                        <li><a href="chapter3.html#sec-3-3">3.3 偏导数与多重积分</a></li>
+                        <li><a href="chapter3.html#sec-3-4">3.4 重要的微积分方法</a></li>
+                        <li><a href="chapter3.html#sec-3-5">3.5 常微分方程</a></li>
+                        <li><a href="chapter3.html#sec-3-6">3.6 线性代数</a></li>
+                    </ul>
+                </li>
+
+                <!-- Chapter 4 -->
+                <li>
+                    <div class="toc-chapter"><a href="chapter4.html">第4章 概率论（Probability Theory）</a></div>
+                    <ul class="toc-items">
+                        <li><a href="chapter4.html#sec-4-1">4.1 基本概率定义与集合运算</a></li>
+                        <li><a href="chapter4.html#sec-4-2">4.2 组合分析</a></li>
+                        <li><a href="chapter4.html#sec-4-3">4.3 条件概率与贝叶斯公式</a></li>
+                        <li><a href="chapter4.html#sec-4-4">4.4 离散与连续分布</a></li>
+                        <li><a href="chapter4.html#sec-4-5">4.5 期望值、方差与协方差</a></li>
+                        <li><a href="chapter4.html#sec-4-6">4.6 顺序统计量</a></li>
+                    </ul>
+                </li>
+
+                <!-- Chapter 5 -->
+                <li>
+                    <div class="toc-chapter"><a href="chapter5.html">第5章 随机过程与随机微积分（Stochastic Process and Stochastic Calculus）</a></div>
+                    <ul class="toc-items">
+                        <li><a href="chapter5.html#sec-5-1">5.1 马尔可夫链（Markov Chain）</a></li>
+                        <li><a href="chapter5.html#sec-5-2">5.2 鞅与随机游走（Martingale and Random Walk）</a></li>
+                        <li><a href="chapter5.html#sec-5-3">5.3 动态规划（Dynamic Programming）</a></li>
+                        <li><a href="chapter5.html#sec-5-4">5.4 布朗运动与随机微积分</a></li>
+                    </ul>
+                </li>
+
+                <!-- Chapter 6 -->
+                <li>
+                    <div class="toc-chapter"><a href="chapter6.html">第6章 金融（Finance）</a></div>
+                    <ul class="toc-items">
+                        <li><a href="chapter6.html#sec-6-1">6.1 期权定价（Option Pricing）</a></li>
+                        <li><a href="chapter6.html#sec-6-2">6.2 希腊字母（The Greeks）</a></li>
+                        <li><a href="chapter6.html#sec-6-3">6.3 期权组合与奇异期权</a></li>
+                        <li><a href="chapter6.html#sec-6-4">6.4 其他金融问题</a></li>
+                    </ul>
+                </li>
+
+                <!-- Chapter 7 -->
+                <li>
+                    <div class="toc-chapter"><a href="chapter7.html">第7章 算法与数值方法（Algorithms and Numerical Methods）</a></div>
+                    <ul class="toc-items">
+                        <li><a href="chapter7.html#sec-7-1">7.1 算法（Algorithms）</a></li>
+                        <li><a href="chapter7.html#sec-7-2">7.2 二的幂（The Power of Two）</a></li>
+                        <li><a href="chapter7.html#sec-7-3">7.3 数值方法（Numerical Methods）</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </section>
+
+        <!-- Footer info -->
+        <section class="preface">
+            <p style="text-align:center; color: var(--text-light); font-size: 0.875rem;">
+                © 2008 Xinfeng Zhou 版权所有<br>
+                <em>献给我的姐姐 Xinli Zhou</em>
+            </p>
+        </section>
+    </main>
+
+    <script>
+        function toggleSidebar() {
+            document.querySelector('.sidebar').classList.toggle('active');
+            document.querySelector('.sidebar-overlay').classList.toggle('active');
+        }
+    </script>
+</body>
+</html>

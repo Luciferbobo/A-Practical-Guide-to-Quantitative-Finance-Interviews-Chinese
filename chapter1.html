@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 1 - A Practical Guide to Quantitative Finance Interviews</title>
+    <link rel="stylesheet" href="styles.css">
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+    <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+    <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
+
+    <nav class="sidebar">
+        <div class="sidebar-header">
+            <h2><a href="index.html">A Practical Guide to Quantitative Finance Interviews</a></h2>
+        </div>
+        <div class="sidebar-nav">
+            <ul>
+                <li><a href="index.html">首页</a></li>
+                <li class="chapter-title">章节目录</li>
+                <li><a href="chapter1.html" class="active">第1章 一般原则</a></li>
+                <li><a href="chapter2.html">第2章 智力题</a></li>
+                <li><a href="chapter3.html">第3章 微积分与线性代数</a></li>
+                <li><a href="chapter4.html">第4章 概率论</a></li>
+                <li><a href="chapter5.html">第5章 随机过程与随机微积分</a></li>
+                <li><a href="chapter6.html">第6章 金融</a></li>
+                <li><a href="chapter7.html">第7章 算法与数值方法</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="content">
+        <nav class="breadcrumb">
+            <a href="index.html">首页</a>
+            <span>›</span>
+            第1章 一般原则
+        </nav>
+
+        <article>
+            <h1>第1章 一般原则（General Principles）</h1>
+
+            <p>让我们首先探讨五个在面试过程中极其有帮助的一般原则。根据我在面试桌两侧的经验，这些一般性指导方针将更好地帮助你准备求职面试，并很可能使你成为一个成功的候选人。</p>
+
+            <hr>
+
+            <!-- Principle 1 -->
+            <h3 id="principle1">1. 建立广泛的知识基础</h3>
+
+            <p>量化面试的长度和风格因公司而异。获得一份宽客工作可能意味着要经历数小时的轮番轰炸，涉及智力题、微积分、线性代数、概率论、统计学、衍生品定价（Derivative Pricing）或编程问题。要成为一个成功的候选人，你需要在数学、金融和编程方面拥有广泛的知识。</p>
+
+            <p>这些主题都会与你未来的宽客工作相关吗？大概不会。每个具体的宽客职位通常只需要这些领域有限的知识。一般的解题能力可能比具体知识更重要。那么为什么量化面试如此全面？至少有两个原因：</p>
+
+            <p>第一个原因是面试官通常有不同的背景。每个面试官都有自己偏爱的主题，这些通常与他或她自己的教育背景或工作经验有关。因此，你将被测试的主题可能非常广泛。第二个原因更为根本。你的解题能力——任何宽客工作的关键要求——通常与你的知识广度呈正相关。对广泛主题的基本理解通常能帮助你更好地分析问题、探索替代方法并找到高效的解决方案。此外，你的职责可能不仅限于你自己的项目。作为更大团队的一员，你将被期望做出贡献。拥有广泛的知识也将帮助你为团队的成功做出贡献。</p>
+
+            <div class="hint">
+                <strong>关键点：</strong>这里的关键是"基本理解"。面试官不会期望你成为某个特定主题的专家——除非那恰好是你的博士论文课题。面试中使用的知识虽然广泛，但主要涵盖基本概念。如果我只能给候选人一个建议，那就是<strong>扎实掌握基础知识</strong>。
+            </div>
+
+            <hr>
+
+            <!-- Principle 2 -->
+            <h3 id="principle2">2. 练习面试技巧</h3>
+
+            <p>面试过程早在你踏入面试室之前就开始了。从某种意义上说，面试的成败往往在第一个问题被提出之前就已经决定了。如果你没有准备好，你对面试问题的解答可能无法反映你真实的智力和知识水平。尽管对量化面试题的全面复习是不可能和不必要的，但练习确实能提高你的面试技巧。此外，许多行为类、技术类和简历相关的问题是可以预见的。因此，在进入面试室之前很久就要为潜在问题做好准备。</p>
+
+            <details class="solution">
+                <summary>💡 要点总结</summary>
+                <div class="solution-content">
+                    <ul>
+                        <li>面试成败在第一个问题之前就已经决定——准备是关键</li>
+                        <li>练习确实能提高面试技巧</li>
+                        <li>行为类、技术类和简历相关的问题是可以预见的</li>
+                        <li>提前为潜在问题做好准备</li>
+                    </ul>
+                </div>
+            </details>
+
+            <hr>
+
+            <!-- Principle 3 -->
+            <h3 id="principle3">3. 仔细倾听</h3>
+
+            <p>你应该在面试中成为一个积极的倾听者，以便在尝试回答之前充分理解问题。如果问题的任何方面对你不清楚，礼貌地要求澄清。如果问题超过几句话，记下关键词帮助你记住所有信息。对于复杂的问题，面试官在解释问题时经常会透露一些线索。即使他们给出的假设条件也可能包含一些关于如何处理问题的信息。所以仔细倾听，确保你获得必要的信息。</p>
+
+            <div class="hint">
+                <strong>提示：</strong>面试官给出的假设条件中往往隐含着解题线索。仔细倾听每一个条件，它们可能指向解决方案的方向。
+            </div>
+
+            <hr>
+
+            <!-- Principle 4 -->
+            <h3 id="principle4">4. 说出你的想法</h3>
+
+            <p>当你分析一个问题并探索不同的解决方法时，永远不要默默地做。清楚地展示你的分析，必要时写下所涉及的重要步骤。这向面试官传达了你的智慧，并表明你是有方法的和全面的。如果你走偏了，这种互动也将给你的面试官纠正方向和提供一些提示的机会。</p>
+
+            <p>说出你的想法并不意味着解释每一个微小的细节。如果某些结论对你来说是显而易见的，只需陈述结论而不需要琐碎的细节。更多情况下，面试官用一个问题来测试一个特定的概念/方法。你应该专注于展示你对关键概念/方法的理解，而不是纠结于不太相关的细节。</p>
+
+            <details class="solution">
+                <summary>💡 "说出想法"的两面</summary>
+                <div class="solution-content">
+                    <p><strong>应该做的：</strong></p>
+                    <ul>
+                        <li>清楚展示分析过程</li>
+                        <li>写下重要步骤</li>
+                        <li>展示你对关键概念的理解</li>
+                    </ul>
+                    <p><strong>不应该做的：</strong></p>
+                    <ul>
+                        <li>解释每一个微小细节</li>
+                        <li>纠结于不相关的琐碎步骤</li>
+                        <li>默默思考不与面试官互动</li>
+                    </ul>
+                </div>
+            </details>
+
+            <hr>
+
+            <!-- Principle 5 -->
+            <h3 id="principle5">5. 做出合理的假设</h3>
+
+            <p>在实际工作中，你不太可能拥有在建立模型和做出决策之前想要的所有必要信息或数据。在面试中，面试官可能也不会给你所有必要的假设条件。所以需要你自己做出合理的假设。关键词是"合理"。向面试官解释你的假设，这样你会得到即时反馈。为了解决量化问题，能够快速做出合理假设并基于这些假设设计适当的框架来解决问题至关重要。</p>
+
+            <div class="hint">
+                <strong>核心要点：</strong>关键词是"合理"——向面试官解释你的假设，这样你会得到即时反馈。能够快速做出合理假设并基于这些假设设计适当的框架来解决问题至关重要。
+            </div>
+
+            <hr>
+
+            <p>我们现在准备好回顾量化金融各学科领域的基本概念，并享受解决真实面试问题的乐趣了！</p>
+        </article>
+
+        <nav class="chapter-nav">
+            <a href="index.html" class="prev">返回首页</a>
+            <a href="chapter2.html" class="next">第2章 智力题</a>
+        </nav>
+    </main>
+
+    <script>
+        function toggleSidebar() {
+            document.querySelector('.sidebar').classList.toggle('active');
+            document.querySelector('.sidebar-overlay').classList.toggle('active');
+        }
+    </script>
+</body>
+</html>

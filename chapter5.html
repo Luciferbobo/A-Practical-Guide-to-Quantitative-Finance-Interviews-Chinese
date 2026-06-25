@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 5 - A Practical Guide to Quantitative Finance Interviews</title>
+    <link rel="stylesheet" href="styles.css">
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+    <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+    <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
+
+    <nav class="sidebar">
+        <div class="sidebar-header">
+            <h2><a href="index.html">A Practical Guide to Quantitative Finance Interviews</a></h2>
+        </div>
+        <div class="sidebar-nav">
+            <ul>
+                <li><a href="index.html">首页</a></li>
+                <li class="chapter-title">章节目录</li>
+                <li><a href="chapter1.html">第1章 一般原则</a></li>
+                <li><a href="chapter2.html">第2章 智力题</a></li>
+                <li><a href="chapter3.html">第3章 微积分与线性代数</a></li>
+                <li><a href="chapter4.html">第4章 概率论</a></li>
+                <li><a href="chapter5.html" class="active">第5章 随机过程与随机微积分</a></li>
+                <li><a href="chapter6.html">第6章 金融</a></li>
+                <li><a href="chapter7.html">第7章 算法与数值方法</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="content">
+        <nav class="breadcrumb">
+            <a href="index.html">首页</a>
+            <span>›</span>
+            第5章 随机过程与随机微积分
+        </nav>
+        <article>
+
+<h1>第五章 随机过程与随机微积分</h1>
+<p>在本章中，我们将涵盖几个主题——马尔可夫链（Markov Chain）、随机游走（Random Walk）和鞅（Martingale）、动态规划（Dynamic Programming）——这些内容通常不包含在概率论入门课程中。与基础概率理论不同，这些工具可能不被视为量化研究员/分析师的标准要求。但是，对这些主题的良好理解可以简化你在许多面试问题中的回答，并在面试过程中给你带来优势。</p>
+
+<section id="sec-5-1">
+<h2>5.1 马尔可夫链（Markov Chain）</h2>
+
+<p>马尔可夫链是一个随机变量序列 \(X_0, X_1, \cdots, X_n, \cdots\)，具有马尔可夫性质，即给定当前状态，未来状态与过去状态独立：</p>
+
+\[P\{X_{n+1} = j \mid X_n = i, X_{n-1} = i_{n-1}, \cdots, X_0 = i_0\} = p_{ij} = P\{X_{n+1} = j \mid X_n = i\}\]
+
+<p>对所有 \(n\)，\(i_0, \cdots, i_{n-1}\)，\(i\) 和 \(j\) 成立，其中 \(i, j \in \{1, 2, \cdots, M\}\) 表示 \(X\) 的状态空间 \(S = \{s_1, s_2, ..., s_M\}\)。</p>
+
+<p>换句话说，一旦当前状态已知，过去的历史对未来没有影响。对于齐次马尔可夫链，从状态 \(i\) 到状态 \(j\) 的转移概率不依赖于 \(n\)。一个具有 \(M\) 个状态的马尔可夫链可以完全由一个 \(M \times M\) 的转移矩阵 \(P\) 和初始概率 \(P(X_0)\) 来描述。</p>
+
+<p><strong>转移矩阵：</strong></p>
+\[P = \{p_{ij}\} = \begin{bmatrix} p_{11} & p_{12} & \cdots & p_{1M} \\ p_{21} & p_{22} & \cdots & p_{2M} \\ \vdots & \vdots & & \vdots \\ p_{M1} & p_{M2} & \cdots & p_{MM} \end{bmatrix}\]
+
+<p><strong>吸收概率方程：</strong>到达特定吸收状态 \(s\) 的概率 \(a_1, \cdots, a_M\)，满足：对所有吸收状态 \(s\)，\(a_s = 1\)；对所有非吸收状态 \(i \neq s\)，\(a_i = 0\)；对所有瞬态状态 \(i\)，\(a_i = \sum_{j=1}^{M} a_j p_{ij}\)。</p>
+
+<p><strong>期望吸收时间方程：</strong>对所有吸收状态 \(i\)，\(\mu_i = 0\)；对所有瞬态状态 \(i\)：</p>
+\[\mu_i = 1 + \sum_{j=1}^{m} p_{ij} \mu_j\]
+
+<h3 class="problem-title">赌徒破产问题（Gambler's Ruin Problem）</h3>
+<p>玩家 \(M\) 有1美元，玩家 \(N\) 有2美元。每局游戏输家给赢家1美元。作为较强的玩家，\(M\) 赢得2/3的游戏。他们一直玩到某人破产。\(M\) 获胜的概率是多少？</p>
+
+<details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+<p>状态空间为 \(\{m\} = \{0, 1, 2, 3\}\)（\(m\) 为玩家 \(M\) 的美元数）。初始状态 \(X_0 = 1\)。状态0和3为吸收状态。</p>
+<p>转移概率：\(p_{1,0} = 1/3\)，\(p_{1,2} = 2/3\)，\(p_{2,1} = 1/3\)，\(p_{2,3} = 2/3\)。</p>
+<p>应用吸收概率方程：</p>
+\[\begin{cases} a_1 = 1/3 \times 0 + 2/3 \times a_2 \\ a_2 = 1/3 \times a_1 + 2/3 \times 1 \end{cases} \Rightarrow \begin{cases} a_1 = 4/7 \\ a_2 = 6/7 \end{cases}\]
+<p>所以，从1美元开始，玩家 \(M\) 获胜的概率为 <strong>4/7</strong>。</p>
+</div></details>
+
+<h3 class="problem-title">骰子问题（Dice Question）</h3>
+<p>两个玩家对两个标准六面骰子的点数之和下注。玩家 \(A\) 赌总和12会先出现。玩家 \(B\) 赌连续两个7会先出现。\(A\) 获胜的概率是多少？</p>
+
+<details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+<p>状态空间：\(S\)（起始）、7（一个7出现）、7-7（\(B\)赢，吸收）、12（\(A\)赢，吸收）。</p>
+<p>\(P(F=12) = 1/36\)，\(P(F=7) = 6/36\)，\(P(F \notin \{7,12\}) = 29/36\)。</p>
+<p>吸收概率方程：</p>
+\[a_S = 1/36 \times 1 + 6/36 \times a_7 + 29/36 \times a_S\]
+\[a_7 = 1/36 \times 1 + 6/36 \times 0 + 29/36 \times a_S\]
+\[\Rightarrow a_S = 7/13\]
+<p>所以 \(A\) 获胜的概率为 <strong>7/13</strong>。</p>
+</div></details>
+
+<h3 class="problem-title">硬币三连组（Coin Triplets）</h3>
+<p><strong>A部分.</strong> 得到 <em>HHH</em> 连续出现的期望抛掷次数？得到 <em>THH</em> 的期望抛掷次数？</p>
+
+<details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+<p>对于 <em>HHH</em>，状态空间：\(S\)、\(H\)、\(HH\)、\(HHH\)（吸收）。</p>
+\[\begin{cases} \mu_S = 1 + \frac{1}{2}\mu_S + \frac{1}{2}\mu_H \\ \mu_H = 1 + \frac{1}{2}\mu_S + \frac{1}{2}\mu_{HH} \\ \mu_{HH} = 1 + \frac{1}{2}\mu_S \end{cases} \Rightarrow \mu_S = 14\]
+<p>对于 <em>THH</em>，状态空间：\(S\)、\(T\)、\(TH\)、\(THH\)（吸收）。</p>
+\[\begin{cases} \mu_S = 1 + \frac{1}{2}\mu_S + \frac{1}{2}\mu_T \\ \mu_T = 1 + \frac{1}{2}\mu_T + \frac{1}{2}\mu_{TH} \\ \mu_{TH} = 1 + \frac{1}{2}\mu_T \end{cases} \Rightarrow \mu_S = 8\]
+<p>得到 <em>HHH</em> 的期望次数为 <strong>14</strong>，得到 <em>THH</em> 的期望次数为 <strong>8</strong>。</p>
+</div></details>
+
+<p><strong>B部分.</strong> 在 <em>THH</em> 之前得到 <em>HHH</em> 子序列的概率是多少？</p>
+<details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+<p>状态空间：\(S\)、\(T\)、\(H\)、\(TH\)、\(HH\)、\(THH\)（吸收）、\(HHH\)（吸收）。</p>
+\[a_{HHH} = 1, \quad a_{THH} = 0\]
+\[a_S = \frac{1}{2}a_T + \frac{1}{2}a_H, \quad a_T = \frac{1}{2}a_T + \frac{1}{2}a_{TH}\]
+\[a_H = \frac{1}{2}a_T + \frac{1}{2}a_{HH}, \quad a_{TH} = \frac{1}{2}a_T + \frac{1}{2}a_{THH}\]
+\[a_{HH} = \frac{1}{2}a_T + \frac{1}{2}a_{HHH}\]
+<p>解得 \(a_T = 0\)，\(a_S = 1/8\)。</p>
+<p>直觉解释：一旦出现反面，我们总是会在 <em>HHH</em> 之前得到 <em>THH</em>。唯一在 <em>THH</em> 之前得到 <em>HHH</em> 的方式是开头就抛出三个连续正面（概率1/8）。</p>
+</div></details>
+
+<p><strong>C部分.</strong> 三连组游戏中两个理性玩家各选三连组，后手获胜概率是多少？</p>
+<details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+<p>无论玩家1选择什么序列，玩家2总能选择一个具有超过1/2获胜概率的序列。关键是选择以玩家1序列的最后两枚硬币作为自己序列的前两枚硬币。</p>
+<p>为最大化获胜概率，玩家1应从 HTH、HTT、THH 和 THT 中选择，但即使如此，玩家2也有 <strong>2/3</strong> 的获胜概率。所以后手更有利。</p>
+</div></details>
+
+<h3 class="problem-title">彩色球（Color Balls）</h3>
+<p>一个盒子中有 \(n\) 个球，共 \(n\) 种不同颜色。每次随机选择一对球，将第一个球重新涂成第二个球的颜色。期望需要多少步使所有球变成同一颜色？</p>
+
+<details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+<p>利用对称性，假设最终所有球变为颜色1（概率 \(1/n\)）。用颜色1球的数量 \(i\) 作为状态。</p>
+<p>条件转移概率：</p>
+\[P(x_{k+1} = i-1 \mid x_k = i, F_1) = \frac{(n-i)(i-1)}{n(n-1)}\]
+\[P(x_{k+1} = i \mid x_k = i, F_1) = \frac{(n-i) \times 2i}{n(n-1)}\]
+\[P(x_{k+1} = i+1 \mid x_k = i, F_1) = \frac{(n-i)(i+1)}{n(n-1)}\]
+<p>利用递归方程和边界条件 \(Z_n = 0\)，最终得到 \(E[N_n] = Z_1 = (n-1)^2\)。</p>
+</div></details>
+</section>
+
+<section id="sec-5-2">
+<h2>5.2 鞅与随机游走（Martingale and Random Walk）</h2>
+
+<p><strong>随机游走：</strong>如果 \(\{X_i; i \geq 1\}\) 是独立同分布随机变量，且 \(S_n = X_1 + \cdots + X_n\)，则 \(\{S_n\}\) 称为随机游走。</p>
+
+<p><strong>鞅：</strong>鞅 \(\{Z_n\}\) 是满足 \(E[Z_{n+1} \mid Z_n, \cdots, Z_1] = Z_n\) 的随机过程。对称随机游走是一个鞅，\(S_n^2 - n\) 也是一个鞅。</p>
+
+<p><strong>瓦尔德等式：</strong>令 \(N\) 为IID随机变量的停止规则，则 \(E[S_N] = E[X]E[N]\)。</p>
+
+<p><strong>在停止时间停止的鞅仍然是鞅。</strong></p>
+
+<h3 class="problem-title">醉汉问题（Drunk Man）</h3>
+<p>一个醉汉在100米长桥的第17米处。每步50%概率前进或后退1米。到达终点（100米）而不到达起点（0米）的概率？到达起点或终点的期望步数？</p>
+
+<details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+<p>令当前位置为0，则在83或-17处停止。\(S_n\) 和 \(S_n^2 - n\) 都是鞅。</p>
+<p>令 \(p_\alpha\) 为停在83处的概率，\(N\) 为停止时间：</p>
+\[E[S_N] = p_\alpha \times 83 - (1-p_\alpha) \times 17 = 0\]
+\[E[S_N^2 - N] = p_\alpha \times 83^2 + (1-p_\alpha) \times 17^2 - E[N] = 0\]
+\[\Rightarrow p_\alpha = 0.17, \quad E[N] = 1411\]
+<p>一般结论：从0开始的对称随机游走，在 \(\alpha\) 或 \(-\beta\) 处停止，停在 \(\alpha\) 的概率为 \(p_\alpha = \beta/(\alpha + \beta)\)，期望停止时间为 \(E[N] = \alpha\beta\)。</p>
+</div></details>
+
+<h3 class="problem-title">骰子游戏（Dice Game）</h3>
+<p>掷骰子得面值对应美元数。掷出4、5或6可再掷，掷出1、2或3游戏停止。期望收益？</p>
+
+<details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+<p>应用瓦尔德等式。停止时间 \(N\) 服从几何分布（\(p = 1/2\)），\(E[N] = 2\)。每次期望面值 \(E[X] = 7/2\)。</p>
+\[E[S_N] = E[X]E[N] = \frac{7}{2} \times 2 = 7\]
+</div></details>
+
+<h3 class="problem-title">售票队列（Ticket Line）</h3>
+<p>\(2n\) 人排队买5美元票。\(n\) 人有5美元，\(n\) 人有10美元。售票员无零钱。所有人顺利买票的概率？</p>
+
+<details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+<p>赋值 +1（5美元）和 -1（10美元）。从 \((0,0)\) 到 \((2n,0)\) 共 \(\binom{2n}{n}\) 条路径。使用反射原理，满足 \(b \geq 0\) 的路径数为：</p>
+\[\binom{2n}{n} - \binom{2n}{n-1} = \frac{1}{n+1}\binom{2n}{n}\]
+<p>概率为 \(\dfrac{1}{n+1}\)。</p>
+</div></details>
+
+<h3 class="problem-title">硬币序列（Coin Sequence）</h3>
+<p>得到连续 \(n\) 次正面的期望抛掷次数是多少？</p>
+
+<details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+<p>结论：\(E[f(n)] = 2^{n+1} - 2\)。</p>
+<p><strong>归纳法证明：</strong></p>
+\[E[f(n+1)] = E[f(n)] + \frac{1}{2} \times 1 + \frac{1}{2} \times (1 + E[f(n+1)])\]
+\[\Rightarrow E[f(n+1)] = 2E[f(n)] + 2 = 2(2^{n+1}-2) + 2 = 2^{n+2} - 2\]
+<p><strong>鞅方法：</strong>利用停止鞅过程，在停止时总收益固定为 \(2^n + 2^{n-1} + \cdots + 2 = 2^{n+1} - 2\)，因此期望时间也是 \(2^{n+1} - 2\)。</p>
+<p>例如序列 <em>HHTTHH</em>：\(E[i] = 2^6 + 2^2 + 2^1 = 70\)。</p>
+</div></details>
+</section>
+
+<section id="sec-5-3">
+<h2>5.3 动态规划（Dynamic Programming）</h2>
+
+<p>动态规划是一类用于解决序列性或多阶段决策问题的一般方法。基本逻辑：从最终阶段（拥有最多信息的阶段）的最优策略开始，逆向推导到初始阶段。</p>
+
+<p><strong>DP算法：</strong>从 \(J_N(x_N) = g_N(x_N)\) 开始，逆向计算：</p>
+\[J_k(x_k) = \min_{u_k \in U_k(x_k)} E_{w_k}\{g_k(x_k, u_k, w_k) + J_{k+1}(f(x_k, u_k, w_k))\}\]
+
+<h3 class="problem-title">骰子游戏（Dice Game）</h3>
+<p>掷6面骰子最多3次。每次可以选择拿面值美元或继续掷。第三次必须接受结果。游戏价值和最优策略？</p>
+
+<details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+<p>逆向推导：</p>
+<ul>
+<li>第三次掷骰（最终阶段）：期望收益 = 3.5美元</li>
+<li>第二次掷骰后：面值 &gt; 3.5 时保留，否则继续。期望收益 = \(3/6 \times 3.5 + 1/6 \times (4+5+6) = 4.25\) 美元</li>
+<li>第一次掷骰后：面值 &gt; 4.25 时保留，否则继续。期望收益 = \(4/6 \times 4.25 + 1/6 \times (5+6) = 14/3\) 美元</li>
+</ul>
+<p>游戏价值为 <strong>14/3 ≈ 4.67 美元</strong>。策略：第一次得5或6时停止，第二次得4、5或6时停止。</p>
+</div></details>
+
+<h3 class="problem-title">世界大赛（World Series）</h3>
+<p>七场四胜制。你有100美元要赌红袜队，但只能对每场下注。如何下注使得红袜赢系列赛恰好赢100，输则恰好输100？</p>
+
+<details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+<p>令 \(f(i,j)\) 为红袜赢 \(i\) 场对手赢 \(j\) 场时的净收益。边界条件：\(f(4,j) = 100\)，\(f(i,4) = -100\)。</p>
+<p>递推关系：</p>
+\[f(i,j) = \frac{f(i+1,j) + f(i,j+1)}{2}\]
+<p>每场下注金额：</p>
+\[y = \frac{f(i+1,j) - f(i,j+1)}{2}\]
+<p>例如 \(f(3,3) = 0\)，下注50；\(f(0,0) = 0\)，下注 \(100/2^6 \approx 1.5625\) 美元。这本质上是一个二叉树中的动态对冲问题。</p>
+</div></details>
+
+<h3 class="problem-title">动态骰子游戏（Dynamic Dice Game）</h3>
+<p>掷骰子可以任意多次，除非出现6（则输掉所有累积的钱）。掷出1-5时赢对应美元数。每次可选择保留或继续。愿意花多少钱玩？</p>
+
+<details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+<p>累积 \(n\) 美元时再掷一次的期望收益：\(\frac{5}{6}n + 2.5\)。当 \(\frac{5}{6}n + 2.5 > n\) 即 \(n < 15\) 时应继续。</p>
+<p>当 \(n \geq 15\) 时停止。最大收益19美元。递归计算 \(E[f(n)]\)：</p>
+\[E[f(n) \mid n \leq 14] = \frac{1}{6}\sum_{i=1}^{5} E[f(n+i)]\]
+<p>最终 \(E[f(0)] = 6.15\) 美元。愿意支付最多 <strong>6.15美元</strong>。</p>
+</div></details>
+
+<h3 class="problem-title">动态纸牌游戏（Dynamic Card Game）</h3>
+<p>52张牌（26红26黑）。逐一翻牌，红 +1美元，黑 -1美元，可随时停止。最优策略和游戏价值？</p>
+
+<details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+<p>令 \((b,r)\) 为剩余黑牌和红牌数。收益 = 已翻红牌 - 已翻黑牌 = \(b - r\)。</p>
+<p>系统方程（类似美式期权）：</p>
+\[E[f(b,r)] = \max\left(b-r, \frac{b}{b+r}E[f(b-1,r)] + \frac{r}{b+r}E[f(b,r-1)]\right)\]
+<p>边界条件：\(f(0,r) = 0\)，\(f(b,0) = b\)。</p>
+<p>递归计算得 \(E[f(26,26)] = \mathbf{2.62}\) 美元。</p>
+</div></details>
+</section>
+
+<section id="sec-5-4">
+<h2>5.4 布朗运动与随机微积分（Brownian Motion and Stochastic Calculus）</h2>
+
+<h3 class="problem-title">布朗运动（Brownian Motion）</h3>
+<p><strong>A.</strong> 定义并列举布朗运动的性质。</p>
+
+<details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+<p>连续随机过程 \(W(t)\)，\(t \geq 0\)，若满足以下条件则为布朗运动：</p>
+<ul>
+<li>\(W(0) = 0\)</li>
+<li>增量独立：\(W(t_1)-W(0), W(t_2)-W(t_1), \cdots\) 独立</li>
+<li>增量正态：\(W(t_{i+1}) - W(t_i) \sim N(0, t_{i+1} - t_i)\)</li>
+</ul>
+<p>重要性质：连续；\(E[W(t)] = 0\)；\(E[W(t)^2] = t\)；鞅性质；马尔可夫性质。</p>
+<p>重要鞅：</p>
+<ul>
+<li>\(Y(t) = W(t)^2 - t\) 是鞅</li>
+<li>\(Z(t) = \exp\{\lambda W(t) - \frac{1}{2}\lambda^2 t\}\)（指数鞅）是鞅</li>
+</ul>
+</div></details>
+
+<p><strong>B.</strong> 布朗运动与其平方的相关系数是多少？</p>
+<details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+<p>\(B_t \sim N(0,t)\)，由对称性 \(E[B_t^3] = 0\)。\(Cov(B_t, B_t^2) = E[B_t^3] - E[B_t]E[B_t^2] = 0\)。</p>
+<p>相关系数为 <strong>0</strong>。</p>
+</div></details>
+
+<p><strong>C.</strong> \(P(B_1 > 0 \text{ 且 } B_2 < 0)\) = ?</p>
+<details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+<p>\(B_1 \sim N(0,1)\)，\(B_2 - B_1 \sim N(0,1)\) 且独立于 \(B_1\)。</p>
+\[P(B_1 > 0, B_2 < 0) = P(B_1 > 0)P(B_2-B_1 < 0)P(|B_2-B_1| > |B_1|) = \frac{1}{2} \times \frac{1}{2} \times \frac{1}{2} = \frac{1}{8}\]
+</div></details>
+
+<h3 class="problem-title">停止时间/首次通过时间</h3>
+<p><strong>A.</strong> 布朗运动到达 -1 或 1 的平均停止时间？</p>
+
+<details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+<p>\(B_t^2 - t\) 是鞅（用伊藤引理可证）。令 \(T = \min\{t; B_t = 1 \text{ 或 } -1\}\)。</p>
+<p>在停止时间停止的鞅仍是鞅：\(E[B_T^2 - T] = 0\)。由于 \(B_T^2 = 1\)，所以 \(E[T] = 1\)。</p>
+</div></details>
+
+<p><strong>B.</strong> 首次通过水平 \(x\) 的时间 \(\tau_x\) 的密度函数和期望？</p>
+<details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+<p>利用反射原理：\(P(\tau_x \leq t) = 2P(W(t) \geq x) = 2 - 2N(x/\sqrt{t})\)</p>
+<p>对 \(t\) 求导：</p>
+\[f_{\tau_x}(t) = \frac{x e^{-x^2/2t}}{t\sqrt{2\pi t}}, \quad x > 0\]
+<p>期望：\(E[\tau_x] = \infty\)（虽然 \(P(\tau_x < \infty) = 1\)）。</p>
+</div></details>
+
+<p><strong>C.</strong> \(dX = dW(t)\) 从0出发，达到3而不是-5的概率？有漂移 \(m\) 时呢？</p>
+<details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+<p>无漂移：\(3P_3 + (-5)(1-P_3) = 0 \Rightarrow P_3 = 5/8\)。</p>
+<p>有漂移 \(m\)：用指数鞅 \(E[\exp(-2mX)] = 1\)，设 \(\lambda = -2m\)：</p>
+\[P_3 e^{-6m} + (1-P_3)e^{10m} = 1 \Rightarrow P_3 = \frac{e^{10m} - 1}{e^{10m} - e^{-6m}}\]
+</div></details>
+
+<p><strong>D.</strong> \(dX = dt + dW(t)\)，\(X\) 从0出发，曾到达-1的概率？</p>
+<details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+<p>用正边界 \(+\infty\)：\(P_{-1}e^{2} + (1-P_{-1})e^{-\infty} = 1\)。</p>
+<p>由于 \(e^{-\infty} = 0\)：\(P_{-1} = e^{-2} \approx 0.135\)。</p>
+</div></details>
+
+<h3 class="problem-title">伊藤引理（Ito's Lemma）</h3>
+<p>设 \(X(t)\) 满足 \(dX = \beta dt + \gamma dW(t)\)，\(f(X,t)\) 为二阶可微函数，则：</p>
+\[df = \left(\frac{\partial f}{\partial t} + \beta\frac{\partial f}{\partial x} + \frac{1}{2}\gamma^2\frac{\partial^2 f}{\partial x^2}\right)dt + \gamma\frac{\partial f}{\partial x}dW(t)\]
+
+<p><strong>A.</strong> \(Z_t = \sqrt{t}B_t\) 是鞅吗？</p>
+<details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+<p>\(Z_t \sim N(0, t^2)\)，均值为0，方差为 \(t^2\)。</p>
+<p>应用伊藤引理：\(dZ_t = \frac{1}{2}t^{-1/2}B_t\,dt + \sqrt{t}\,dB_t\)。漂移项 \(\frac{1}{2}t^{-1/2}B_t\) 不为零，所以 <strong>不是鞅</strong>。</p>
+</div></details>
+
+<p><strong>B.</strong> \(W(t)^3\) 是鞅吗？</p>
+<details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+<p>应用伊藤引理：\(d(W^3) = 3W(t)\,dt + 3W(t)^2\,dW(t)\)。漂移项 \(3W(t)\) 不为零，所以 <strong>不是鞅</strong>。</p>
+</div></details>
+</section>
+
+        </article>
+        <nav class="chapter-nav">
+            <a href="chapter4.html" class="prev">第4章 概率论</a>
+            <a href="chapter6.html" class="next">第6章 金融</a>
+        </nav>
+    </main>
+
+    <script>
+        function toggleSidebar() {
+            document.querySelector('.sidebar').classList.toggle('active');
+            document.querySelector('.sidebar-overlay').classList.toggle('active');
+        }
+    </script>
+</body>
+</html>

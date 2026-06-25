@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 4 - A Practical Guide to Quantitative Finance Interviews</title>
+    <link rel="stylesheet" href="styles.css">
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+    <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+    <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
+
+    <nav class="sidebar">
+        <div class="sidebar-header">
+            <h2><a href="index.html">A Practical Guide to Quantitative Finance Interviews</a></h2>
+        </div>
+        <div class="sidebar-nav">
+            <ul>
+                <li><a href="index.html">首页</a></li>
+                <li class="chapter-title">章节目录</li>
+                <li><a href="chapter1.html">第1章 一般原则</a></li>
+                <li><a href="chapter2.html">第2章 智力题</a></li>
+                <li><a href="chapter3.html">第3章 微积分与线性代数</a></li>
+                <li><a href="chapter4.html" class="active">第4章 概率论</a></li>
+                <li><a href="chapter5.html">第5章 随机过程与随机微积分</a></li>
+                <li><a href="chapter6.html">第6章 金融</a></li>
+                <li><a href="chapter7.html">第7章 算法与数值方法</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="content">
+        <nav class="breadcrumb">
+            <a href="index.html">首页</a>
+            <span>›</span>
+            第4章 概率论
+        </nav>
+        <article>
+            <h1>第4章 概率论</h1>
+            <p>在大多数量化面试中，你很可能会遇到至少几个概率问题。概率论是量化金融各方面的基础。因此，它已成为量化面试中的热门话题。</p>
+            <p>虽然良好的直觉和逻辑能帮助你解决许多概率问题，但对基本概率论的透彻理解将为你提供清晰简明的解答来应对大部分问题。此外，概率论在解释某些看似违反直觉的结果时极为有价值。掌握一点知识，你会发现许多面试问题不过是伪装过的教科书题目。</p>
+            <p>让我们来快乐地玩弄概率吧。</p>
+
+            <!-- 4.1 基本概率定义和集合运算 -->
+            <section id="sec-4-1">
+                <h2>4.1 基本概率定义和集合运算</h2>
+                <p>首先让我们从概率中使用的一些基本定义和符号开始。</p>
+                <ul>
+                    <li><strong>结果（Outcome）</strong>（\(\omega\)）：实验或试验的结果。</li>
+                    <li><strong>样本空间（Sample space）</strong>（\(\Omega\)）：实验所有可能结果的集合。</li>
+                    <li>\(P(\omega)\)：结果的概率（\(P(\omega) \geq 0\)，\(\forall \omega \in \Omega\)，\(\sum_{\omega \in \Omega} P(\omega) = 1\)）。</li>
+                    <li><strong>事件（Event）</strong>：一组结果，是样本空间的子集。</li>
+                    <li>\(P(A)\)：事件 \(A\) 的概率，\(P(A) = \sum_{\omega \in A} P(\omega)\)。</li>
+                    <li>\(A \cup B\)：并集，\(A \cup B\) 是事件 \(A\) 或事件 \(B\)（或两者）中结果的集合。</li>
+                    <li>\(A \cap B\) 或 \(AB\)：交集，同时在 \(A\) 和 \(B\) 中的结果的集合。</li>
+                    <li>\(A^c\)：\(A\) 的补集，即事件"非 \(A\)"。</li>
+                    <li><strong>互斥</strong>：\(A \cap B = \Phi\)，其中 \(\Phi\) 是空集。</li>
+                    <li><strong>随机变量</strong>：将样本空间中的每个结果映射到实数集合的函数。</li>
+                </ul>
+                <p>对于任何互斥事件 \(E_1, E_2, \cdots, E_N\)：</p>
+                \[P\left(\bigcup_{i=1}^{N} E_i\right) = \sum_{i=1}^{N} P(E_i)\]
+
+                <h3 class="problem-title">抛硬币游戏（Coin Toss Game）</h3>
+                <p>两个赌徒在玩抛硬币游戏。赌徒 \(A\) 有 \((n+1)\) 枚公平硬币；\(B\) 有 \(n\) 枚公平硬币。如果双方都抛掷所有硬币，\(A\) 正面朝上数多于 \(B\) 的概率是多少？</p>
+                <details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+                    <p>那一枚多出来的硬币使 \(A\) 不同于 \(B\)。如果我们从 \(A\) 中移除一枚硬币，\(A\) 和 \(B\) 将变得对称。所以让我们移除 \(A\) 的最后一枚硬币，比较 \(A\) 的前 \(n\) 枚硬币和 \(B\) 的 \(n\) 枚硬币。有三种可能的结果：</p>
+                    <ul>
+                        <li>\(E_1\)：\(A\) 的 \(n\) 枚硬币比 \(B\) 的 \(n\) 枚硬币正面多；</li>
+                        <li>\(E_2\)：\(A\) 的 \(n\) 枚硬币和 \(B\) 的 \(n\) 枚硬币正面数相等；</li>
+                        <li>\(E_3\)：\(A\) 的 \(n\) 枚硬币比 \(B\) 的 \(n\) 枚硬币正面少。</li>
+                    </ul>
+                    <p>由对称性，\(P(E_1) = P(E_3) = x\)，设 \(P(E_2) = y\)，则 \(2x + y = 1\)。</p>
+                    <p>对于事件 \(E_1\)，无论第 \((n+1)\) 枚硬币是什么面，\(A\) 总是正面更多；对于事件 \(E_3\)，\(A\) 都不会比 \(B\) 正面更多。对于事件 \(E_2\)，如果第 \((n+1)\) 枚硬币是正面（概率0.5），会使 \(A\) 正面多于 \(B\)。</p>
+                    <p>所以 \(A\) 正面更多的总概率为：</p>
+                    \[x + 0.5y = x + 0.5(1-2x) = 0.5\]
+                </div></details>
+
+                <h3 class="problem-title">纸牌游戏（Card Game）</h3>
+                <p>一副52张牌。你从牌堆中抽一张牌，庄家不放回地再抽一张。如果你的数字更大，你赢；如果数字相等或你的更小，庄家赢。你赢的概率是多少？</p>
+                <details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+                    <p><strong>方法一（直接计算）：</strong></p>
+                    \[\frac{1}{13} \times \left(\frac{0}{51} + \frac{4}{51} + \cdots + \frac{48}{51}\right) = \frac{4}{13 \times 51} \times \frac{12 \times 13}{2} = \frac{8}{17}\]
+                    <p><strong>方法二（对称性）：</strong>考虑三种结果：</p>
+                    <ul>
+                        <li>\(E_1\)：你的牌比庄家的大；</li>
+                        <li>\(E_2\)：你的牌和庄家的相等；</li>
+                        <li>\(E_3\)：你的牌比庄家的小。</li>
+                    </ul>
+                    <p>由对称性，\(P(E_1) = P(E_3)\)。两张牌点数相同的概率为 \(P(E_2) = 3/51\)。</p>
+                    <p>因此：\(P(E_1) = (1 - 3/51)/2 = 8/17\)</p>
+                </div></details>
+
+                <h3 class="problem-title">醉酒乘客（Drunk Passenger）</h3>
+                <p>100名乘客排队登机，每人持有一张对应座位的机票。第一个人喝醉了，随机选座位。其他人会坐自己的正确座位，除非已被占用，则随机选一个空座位。你是第100号乘客，你最终坐在自己座位上的概率是多少？</p>
+                <details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+                    <p>考虑座位#1和#100。有两种可能：</p>
+                    <ul>
+                        <li>\(E_1\)：座位#1在#100之前被人坐了；</li>
+                        <li>\(E_2\)：座位#100在#1之前被人坐了。</li>
+                    </ul>
+                    <p>如果任何乘客在座位#1被占之前坐了座位#100，你肯定不会坐在自己的座位上。但如果任何乘客在座位#100被占之前坐了座位#1，你肯定会坐在自己的座位上。</p>
+                    <p>由对称性，任一结果的概率都是0.5。所以你最终坐在自己座位上的概率是 <strong>50%</strong>。</p>
+                    <p>详细解释：如果醉酒乘客坐了座位#1，所有其余乘客都会坐到正确座位。如果他坐了#100，你就得不到自己的座位。否则假设他坐了第 \(n\) 号座位（\(2 \leq n \leq 99\)），则第 \(n\) 位乘客变成新的"醉鬼"。每个新"醉鬼"选座位#1或#100的概率相等。由对称性，答案是0.5。</p>
+                </div></details>
+
+                <h3 class="problem-title">圆上N个点（N Points on a Circle）</h3>
+                <p>给定随机画在圆周上的 \(N\) 个点，它们都在一个半圆内的概率是多少？</p>
+                <details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+                    <p>从一个点开始，顺时针标记各点为 \(1, 2, \cdots, N\)。所有剩余 \(N-1\) 个点都在从点1开始的顺时针半圆内的概率是 \(1/2^{N-1}\)。类似地，从任意点 \(i\) 开始的顺时针半圆包含所有其他点的概率也是 \(1/2^{N-1}\)。</p>
+                    <p>这些事件是互斥的（因为如果从点 \(i\) 开始顺时针半圆包含所有点，则 \(i-1\) 和 \(i\) 之间的弧不小于半圆，从其他点开始不可能包含所有点）。</p>
+                    <p>因此：</p>
+                    \[P\left(\bigcup_{i=1}^{N} E_i\right) = N \times \frac{1}{2^{N-1}} = \frac{N}{2^{N-1}}\]
+                    <p>推广：如果弧长与圆周之比为 \(x\)（\(x \leq 1/2\)），则所有 \(N\) 个点落入该弧内的概率为 \(N \cdot x^{N-1}\)。</p>
+                </div></details>
+            </section>
+
+            <!-- 4.2 组合分析 -->
+            <section id="sec-4-2">
+                <h2>4.2 组合分析</h2>
+                <p>概率论中的许多问题可以通过简单计数来解决。计数的数学理论通常被称为组合分析。</p>
+                <ul>
+                    <li><strong>基本计数原理</strong>：长度为 \(k\) 的序列，若有 \(n_1\) 种第一项，\(n_2\) 种第二项……则总共有 \(n_1 \cdot n_2 \cdots n_k\) 种结果。</li>
+                    <li><strong>排列</strong>：\(n\) 个对象中（其中 \(n_1\) 个相同，\(n_2\) 个相同，\(\cdots\)）有 \(\frac{n!}{n_1! n_2! \cdots n_r!}\) 种不同排列。</li>
+                    <li><strong>组合</strong>：从 \(n\) 个不同对象中取 \(r\) 个，有 \(\binom{n}{r} = \frac{n!}{(n-r)!r!}\) 种组合。</li>
+                    <li><strong>二项式定理</strong>：\((x+y)^n = \sum_{k=0}^{n} \binom{n}{k} x^k y^{n-k}\)</li>
+                    <li><strong>容斥原理</strong>：\(P(E_1 \cup E_2) = P(E_1) + P(E_2) - P(E_1 E_2)\)</li>
+                </ul>
+
+                <h3 class="problem-title">扑克牌型（Poker Hands）</h3>
+                <p>得到四条、葫芦、两对的概率分别是多少？</p>
+                <details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+                    <p>五张牌的不同手牌数 = \(\binom{52}{5} = 2,598,960\)</p>
+                    <p><strong>四条</strong>：选择点数（13种）× 第5张牌（48种）= \(13 \times 48 = 624\)</p>
+                    <p><strong>葫芦</strong>：</p>
+                    \[13 \times \binom{4}{3} \times 12 \times \binom{4}{2} = 13 \times 4 \times 12 \times 6 = 3,744\]
+                    <p><strong>两对</strong>：</p>
+                    \[\binom{13}{2} \times \binom{4}{2} \times \binom{4}{2} \times 44 = 78 \times 6 \times 6 \times 44 = 123,552\]
+                </div></details>
+
+                <h3 class="problem-title">跳台阶的兔子（Hopping Rabbit）</h3>
+                <p>一只兔子坐在有 \(n\) 级台阶的楼梯底部。兔子每次只能跳一级或两级。兔子到达楼梯顶端有多少种不同的方式？</p>
+                <details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+                    <p>用归纳法：\(f(1) = 1\)，\(f(2) = 2\)。对于 \(n > 2\)，最后一跳有两种可能（一级跳或两级跳），所以：</p>
+                    \[f(n) = f(n-1) + f(n-2)\]
+                    <p>这就是斐波那契数列！</p>
+                </div></details>
+
+                <h3 class="problem-title">疯狂海盗2（Screwy Pirates 2）</h3>
+                <p>11个海盗将战利品放入保险箱。只有多数人（≥6人）一起才能打开保险箱。每把锁都必须被打开才能获取宝藏。最少需要多少把锁？每个海盗必须携带多少把钥匙？</p>
+                <details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+                    <p>从11人中随机选择5个海盗；必须有一把锁是他们5人都没有钥匙的，而其他6人都有。对于每种5人组合，都必须有这样一把"特殊"锁。</p>
+                    <p>最少需要的锁数：\(\binom{11}{5} = 462\) 把锁</p>
+                    <p>每个海盗携带的钥匙数：\(\frac{462 \times 6}{11} = 252\) 把钥匙</p>
+                </div></details>
+
+                <h3 class="problem-title">象棋锦标赛（Chess Tournament）</h3>
+                <p>一个象棋锦标赛有 \(2^n\) 名棋手，技术水平 \(1 > 2 > \cdots > 2^n\)。淘汰赛形式，技术更好者总是赢。棋手1和2在决赛中相遇的概率是多少？</p>
+                <details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+                    <p><strong>计数方法：</strong>\(2^n\) 名棋手被分成两个 \(2^{n-1}\) 人的子组。棋手1一定会进入决赛。要让棋手2进入决赛，他必须和棋手1在不同的子组中。</p>
+                    <p>由于 \(2, 3, \cdots, 2^n\) 中的任何一个都同等可能在任一子组中，棋手2在与1不同子组中的概率为：</p>
+                    \[\frac{2^{n-1}}{2^n - 1}\]
+                    <p><strong>条件概率方法：</strong>应用乘法法则逐轮计算：</p>
+                    \[P = \frac{2(2^{n-1}-1)}{2^n-1} \times \frac{2(2^{n-2}-1)}{2^{n-1}-1} \times \cdots \times \frac{2(2^1-1)}{2^2-1} = \frac{2^{n-1}}{2^n-1}\]
+                </div></details>
+
+                <h3 class="problem-title">求职信（Application Letters）</h3>
+                <p>5封个性化求职信被3岁孩子随机放入5个信封。所有5封都寄错的概率是多少？</p>
+                <details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+                    <p>使用容斥原理。设 \(E_i\) 为第 \(i\) 封信放在正确信封中的事件。</p>
+                    \[P\left(\bigcup_{i=1}^{5} E_i\right) = 1 - \frac{1}{2!} + \frac{1}{3!} - \frac{1}{4!} + \frac{1}{5!} = \frac{19}{30}\]
+                    <p>所以所有5封信寄错的概率为：</p>
+                    \[1 - \frac{19}{30} = \frac{11}{30}\]
+                </div></details>
+
+                <h3 class="problem-title">生日问题（Birthday Problem）</h3>
+                <p>一个班级需要多少人才能使两人生日相同的概率超过1/2？</p>
+                <details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+                    <p>答案是 <strong>23</strong> 人。</p>
+                    <p>没有生日重复的概率为：</p>
+                    \[\frac{365 \times 364 \times \cdots \times (365-n+1)}{365^n}\]
+                    <p>需要这个值 \(< 1/2\)，满足条件的最小 \(n\) 是23。</p>
+                </div></details>
+
+                <h3 class="problem-title">第100位数字（100th Digit）</h3>
+                <p>\((1+\sqrt{2})^{3000}\) 的十进制表示中小数点右边第100位数字是什么？</p>
+                <details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+                    <p>关键观察：\((1+\sqrt{2})^n + (1-\sqrt{2})^n\) 是整数（利用二项式定理，奇数次幂项相消）。</p>
+                    <p>由于 \(0 < (1-\sqrt{2})^{3000} \ll 10^{-100}\)，所以 \((1+\sqrt{2})^{3000}\) 的小数部分极接近1。</p>
+                    <p>因此第100位数字必须是 <strong>9</strong>。</p>
+                </div></details>
+
+                <h3 class="problem-title">整数的立方（Cubic of Integer）</h3>
+                <p>设 \(x\) 是1到 \(10^{12}\) 之间的整数，\(x\) 的立方以11结尾的概率是多少？</p>
+                <details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+                    <p>设 \(x = a + 10b\)，其中 \(a\) 是最后一位数字。由二项式定理：</p>
+                    \[x^3 = a^3 + 30a^2b + 300ab^2 + 1000b^3\]
+                    <p>个位数字只取决于 \(a^3\)，必须为1，所以 \(a = 1\)。十位数字取决于 \(30b\)，需要 \(3b\) 以1结尾，所以 \(b\) 的最后一位是7。</p>
+                    <p>\(x\) 的最后两位应为71，概率为 <strong>1%</strong>。</p>
+                </div></details>
+            </section>
+
+            <!-- 4.3 条件概率与贝叶斯公式 -->
+            <section id="sec-4-3">
+                <h2>4.3 条件概率与贝叶斯公式</h2>
+                <p>许多金融交易是基于新的——且很可能是不完整的——信息对概率进行调整的反应。</p>
+                <ul>
+                    <li><strong>条件概率</strong>：\(P(A|B) = \frac{P(AB)}{P(B)}\)</li>
+                    <li><strong>乘法法则</strong>：\(P(E_1 E_2 \cdots E_n) = P(E_1)P(E_2|E_1)P(E_3|E_1 E_2) \cdots P(E_n|E_1 \cdots E_{n-1})\)</li>
+                    <li><strong>全概率公式</strong>：\(P(E) = \sum_{i=1}^{n} P(E|F_i)P(F_i)\)</li>
+                    <li><strong>独立事件</strong>：\(P(EF) = P(E)P(F)\)</li>
+                    <li><strong>贝叶斯公式</strong>：\(P(F_j|E) = \frac{P(E|F_j)P(F_j)}{\sum_{i=1}^{n} P(E|F_i)P(F_i)}\)</li>
+                </ul>
+
+                <h3 class="problem-title">男孩和女孩（Boys and Girls）</h3>
+                <p><strong>A部分：</strong>Jackson女士有两个孩子，且至少有一个儿子。两个孩子都是男孩的概率是多少？</p>
+                <p><strong>B部分：</strong>Parker女士有两个孩子。你看到她和其中一个男孩散步。两个孩子都是男孩的概率是多少？</p>
+                <details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+                    <p><strong>A部分：</strong>样本空间 \(\Omega = \{(b,b), (b,g), (g,b), (g,g)\}\)。</p>
+                    \[P(A|B) = \frac{P(\{(b,b)\})}{P(\{(b,b),(b,g),(g,b)\})} = \frac{1/4}{3/4} = \frac{1}{3}\]
+                    <p><strong>B部分：</strong>另一个孩子同样可能是男孩或女孩，所以概率是 <strong>1/2</strong>。</p>
+                    <p>区别：A部分问的是"至少一个是男孩"的条件；B部分问的是"某个特定的孩子是男孩"的条件。</p>
+                </div></details>
+
+                <h3 class="problem-title">全是女孩的世界？（All-girl World?）</h3>
+                <p>每对夫妇坚持生孩子直到生了一个女孩就停止。这个社会中女孩的比例最终会如何变化？</p>
+                <details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+                    <p>女婴的比例是由自然决定的，不是由夫妇的偏好决定的。每个新生儿有同等概率是男孩或女孩，无论其他孩子的性别如何。</p>
+                    <p>所以女孩出生的比例始终是 <strong>50%</strong>。</p>
+                </div></details>
+
+                <h3 class="problem-title">不公平硬币（Unfair Coin）</h3>
+                <p>1000枚硬币中1枚两面都是正面，其余999枚是公平的。你随机选一枚抛10次，每次都是正面。你选的是不公平那枚的概率是多少？</p>
+                <details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+                    <p>应用贝叶斯定理：</p>
+                    \[P(A|B) = \frac{P(B|A)P(A)}{P(B|A)P(A) + P(B|A^c)P(A^c)}\]
+                    <p>其中 \(P(A) = 1/1000\)，\(P(B|A) = 1\)，\(P(B|A^c) = (1/2)^{10} = 1/1024\)。</p>
+                    \[P(A|B) = \frac{1/1000}{1/1000 + 999/(1000 \times 1024)} = \frac{1024}{2023} \approx 0.506\]
+                </div></details>
+
+                <h3 class="problem-title">用不公平硬币产生公平概率</h3>
+                <p>如果你有一枚不公平的硬币，能用它产生均等的概率吗？</p>
+                <details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+                    <p>考虑两次独立抛掷。设 \(p_H\) 为正面概率，\(p_T\) 为反面概率。</p>
+                    <p>四种结果：\(P(HT) = p_H p_T = P(TH)\)。</p>
+                    <p>将 HT 指定为赢，TH 指定为输，即可产生均等的概率。（忽略 HH 和 TT，重新抛掷。）</p>
+                </div></details>
+
+                <h3 class="problem-title">飞镖游戏</h3>
+                <p>Jason 投掷两支飞镖，第二支比第一支离靶心更远。如果再投第三支，第三支比第一支离靶心更远的概率是多少？</p>
+                <details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+                    <p>第 \((n+1)\) 次投掷是所有 \((n+1)\) 次投掷中最好的这个事件，与前 \(n\) 次投掷的顺序独立。</p>
+                    <p>第三投不是最好的概率为 \(n/(n+1) = 2/3\)。只要第三投不是最佳投掷，它就会比第一支差。</p>
+                    <p>答案：<strong>2/3</strong></p>
+                </div></details>
+
+                <h3 class="problem-title">生日排队</h3>
+                <p>电影院经理给排队中第一个与已购票者生日相同的人免费票。你应该排在哪个位置？</p>
+                <details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+                    <p>排在第 \(n\) 个位置的获奖概率：</p>
+                    \[p(n) = \frac{365 \times 364 \times \cdots \times (365-n+2)}{365^{n-1}} \times \frac{n-1}{365}\]
+                    <p>求最优 \(n\)，需满足 \(P(n) > P(n-1)\) 且 \(P(n) > P(n+1)\)：</p>
+                    \[\begin{cases} n^2 - 3n - 363 < 0 \\ n^2 - n - 365 > 0 \end{cases} \Rightarrow n = 20\]
+                    <p>你应该排在<strong>第20个位置</strong>。</p>
+                </div></details>
+
+                <h3 class="problem-title">骰子顺序</h3>
+                <p>逐个投掷3个骰子，获得3个严格递增点数的概率是多少？</p>
+                <details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+                    \[P = P(\text{三次点数都不同}) \times P(\text{递增顺序} \mid \text{3个不同点数})\]
+                    \[= \left(1 \times \frac{5}{6} \times \frac{4}{6}\right) \times \frac{1}{6} = \frac{5}{54}\]
+                </div></details>
+
+                <h3 class="problem-title">蒙提霍尔问题（Monty Hall Problem）</h3>
+                <p>3扇门，一扇后有汽车，两扇后有山羊。你选一扇门后，主持人打开另一扇有山羊的门。你应该换吗？</p>
+                <details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+                    <p>如果不换，赢的概率是 1/3。</p>
+                    <p>如果换门：你赢得汽车当且仅当你最初选了有山羊的门（概率 2/3）。最初选了山羊的门 → Monty 展示另一扇山羊门 → 换到的门后一定是汽车。</p>
+                    <p>换门后赢的概率是 <strong>2/3</strong>。你应该换！</p>
+                </div></details>
+
+                <h3 class="problem-title">变形虫种群</h3>
+                <p>池塘里有一只变形虫。每分钟可能死亡、保持不变、分裂成两个或三个，概率相等。整个种群灭绝的概率是多少？</p>
+                <details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+                    <p>设 \(P(E)\) 为灭绝概率。对一分钟后的情况应用全概率公式：</p>
+                    \[P(E) = \frac{1}{4} \times 1 + \frac{1}{4} \times P(E) + \frac{1}{4} \times P(E)^2 + \frac{1}{4} \times P(E)^3\]
+                    <p>在 \(0 < P(E) < 1\) 的限制下求解：</p>
+                    \[P(E) = \sqrt{2} - 1 \approx 0.414\]
+                </div></details>
+
+                <h3 class="problem-title">罐中糖果</h3>
+                <p>罐中有10颗红、20颗蓝、30颗绿糖果。逐个取出，当取完所有红糖果时，至少还剩1颗蓝和1颗绿的概率是多少？</p>
+                <details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+                    <p>设 \(T_r, T_b, T_g\) 分别为最后一颗红、蓝、绿糖果被取出的编号。需要 \(P(T_r < T_b \cap T_r < T_g)\)。</p>
+                    \[P(T_r < T_b < T_g) = \frac{30}{60} \times \frac{20}{30}\]
+                    \[P(T_r < T_g < T_b) = \frac{20}{60} \times \frac{30}{40}\]
+                    \[P(T_r < T_b \cap T_r < T_g) = \frac{30}{60} \times \frac{20}{30} + \frac{20}{60} \times \frac{30}{40} = \frac{7}{12}\]
+                </div></details>
+
+                <h3 class="problem-title">抛硬币游戏（HT子序列）</h3>
+                <p>两个玩家 \(A\) 和 \(B\) 交替抛硬币（\(A\) 先抛）。如果出现 HT 子序列，抛出 T 的人获胜。\(A\) 赢的概率是多少？</p>
+                <details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+                    <p>设 \(P(A)\) 为 \(A\) 获胜的概率。</p>
+                    \[P(A) = \frac{1}{2} \cdot P(A|H) + \frac{1}{2} \cdot P(A|T)\]
+                    <p>如果 \(A\) 抛出 T：\(P(A|T) = P(B) = 1 - P(A)\)</p>
+                    <p>如果 \(A\) 抛出 H：\(P(A|H) = \frac{1}{2} \times 0 + \frac{1}{2}(1 - P(A|H)) \Rightarrow P(A|H) = 1/3\)</p>
+                    <p>综合：</p>
+                    \[P(A) = \frac{1}{2} \times \frac{1}{3} + \frac{1}{2}(1-P(A)) \Rightarrow P(A) = \frac{4}{9}\]
+                </div></details>
+
+                <h3 class="problem-title">俄罗斯轮盘赌系列</h3>
+                <p><strong>问题1：</strong>一颗子弹放入6膛左轮，弹巢随机旋转后不再旋转。两人轮流扣扳机，你选先还是后？</p>
+                <p><strong>问题2：</strong>每次扣扳机后重新旋转弹巢，你选先还是后？</p>
+                <p><strong>问题3：</strong>两颗子弹随机放入，对手第一轮幸存，你应该旋转弹巢吗？</p>
+                <p><strong>问题4：</strong>两颗子弹在相邻位置，对手第一轮幸存，你应该旋转弹巢吗？</p>
+                <details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+                    <p><strong>问题1：</strong>弹巢旋转后子弹位置固定。先走输当且仅当子弹在1、3、5号位，概率为 1/2。先走还是后走无关紧要。</p>
+                    <p><strong>问题2：</strong>每轮独立。设先手输的概率为 \(p\)：</p>
+                    \[p = \frac{1}{6} + \frac{5}{6}(1-p) \Rightarrow p = \frac{6}{11}\]
+                    <p>你应该选择做第二个玩家，输的概率为 5/11。</p>
+                    <p><strong>问题3：</strong>旋转：死亡概率 2/6 = 1/3。不旋转：剩5膛中2颗子弹，死亡概率 2/5。应该<strong>旋转</strong>。</p>
+                    <p><strong>问题4：</strong>两颗相邻子弹，对手幸存说明他在4个空位之一。下一个位置有子弹的概率为 1/4，死亡概率 1/4。旋转的话死亡概率 2/6 = 1/3。<strong>不应该旋转</strong>。</p>
+                </div></details>
+
+                <h3 class="problem-title">A牌问题（Aces）</h3>
+                <p>52张牌随机分给4个玩家每人13张。每人都有一张A的概率是多少？</p>
+                <details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+                    <p>用条件概率方法：第一张A有概率1属于某一堆。第二张A不在同一堆的概率为 39/51。第三张A在另外两堆之一的条件概率是 26/50。第四张A的条件概率是 13/49。</p>
+                    \[P = 1 \times \frac{39}{51} \times \frac{26}{50} \times \frac{13}{49} \approx 0.1055\]
+                </div></details>
+
+                <h3 class="problem-title">赌徒破产问题（Gambler's Ruin Problem）</h3>
+                <p>赌徒以 \(i\) 美元起步，每局以概率 \(p\) 赢1美元或概率 \(q=1-p\) 输1美元。在积累到 \(N\) 美元或输光时停止。最终拥有 \(N\) 美元的概率是多少？</p>
+                <details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+                    <p>设 \(P_i\) 为从状态 \(i\) 到达 \(N\) 的概率。递推关系：</p>
+                    \[P_i = pP_{i+1} + qP_{i-1}\]
+                    <p>边界条件：\(P_0 = 0\)，\(P_N = 1\)。</p>
+                    <p>求解得：</p>
+                    \[P_i = \begin{cases} \frac{1-(q/p)^i}{1-(q/p)^N}, & \text{如果} \ p \neq 1/2 \\ i/N, & \text{如果} \ p = 1/2 \end{cases}\]
+                </div></details>
+
+                <h3 class="problem-title">篮球投篮</h3>
+                <p>100次罚球，第一次投进第二次未投进。之后每次投进概率等于当前命中率。100次后恰好得50分的概率是多少？</p>
+                <details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+                    <p>用归纳法证明 \(P_{n,k} = \frac{1}{n-1}\)，\(\forall k = 1, 2, \cdots, n-1\)。</p>
+                    <p>归纳步骤：</p>
+                    \[P_{n+1,k} = \left(1 - \frac{k}{n}\right)\frac{1}{n-1} + \frac{k-1}{n} \cdot \frac{1}{n-1} = \frac{1}{n}\]
+                    <p>因此：\(P_{100,50} = \frac{1}{99}\)</p>
+                </div></details>
+
+                <h3 class="problem-title">路上的汽车</h3>
+                <p>如果20分钟内观察到至少一辆车的概率是 609/625，那么5分钟内观察到至少一辆车的概率是多少？</p>
+                <details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+                    <p>将20分钟分为4个独立的5分钟间隔。设5分钟内观察到车的概率为 \(p\)。</p>
+                    \[(1-p)^4 = 1 - \frac{609}{625} = \frac{16}{625}\]
+                    \[1-p = \frac{2}{5} \Rightarrow p = \frac{3}{5}\]
+                </div></details>
+            </section>
+
+            <!-- 4.4 离散分布与连续分布 -->
+            <section id="sec-4-4">
+                <h2>4.4 离散分布与连续分布</h2>
+                <p>在本节中，我们回顾量化建模中广泛使用的随机变量的各种分布函数。</p>
+
+                <h4>离散型随机变量</h4>
+                <table>
+                    <thead><tr><th>名称</th><th>概率质量函数 (pmf)</th><th>\(E[X]\)</th><th>\(var(X)\)</th></tr></thead>
+                    <tbody>
+                        <tr><td>均匀分布</td><td>\(P(x) = \frac{1}{b-a+1}\)</td><td>\(\frac{b+a}{2}\)</td><td>\(\frac{(b-a+1)^2-1}{12}\)</td></tr>
+                        <tr><td>二项分布</td><td>\(P(x) = \binom{n}{x}p^x(1-p)^{n-x}\)</td><td>\(np\)</td><td>\(np(1-p)\)</td></tr>
+                        <tr><td>泊松分布</td><td>\(P(x) = \frac{e^{-\lambda t}(\lambda t)^x}{x!}\)</td><td>\(\lambda t\)</td><td>\(\lambda t\)</td></tr>
+                        <tr><td>几何分布</td><td>\(P(x) = (1-p)^{x-1}p\)</td><td>\(\frac{1}{p}\)</td><td>\(\frac{1-p}{p^2}\)</td></tr>
+                        <tr><td>负二项分布</td><td>\(P(x) = \binom{x-1}{r-1}p^r(1-p)^{x-r}\)</td><td>\(\frac{r}{p}\)</td><td>\(\frac{r(1-p)}{p^2}\)</td></tr>
+                    </tbody>
+                </table>
+
+                <h4>连续型随机变量</h4>
+                <table>
+                    <thead><tr><th>名称</th><th>概率密度函数 (pdf)</th><th>\(E[X]\)</th><th>\(var(X)\)</th></tr></thead>
+                    <tbody>
+                        <tr><td>均匀分布</td><td>\(\frac{1}{b-a}\)，\(a \leq x \leq b\)</td><td>\(\frac{b+a}{2}\)</td><td>\(\frac{(b-a)^2}{12}\)</td></tr>
+                        <tr><td>正态分布</td><td>\(\frac{1}{\sqrt{2\pi}\sigma}e^{-(x-\mu)^2/(2\sigma^2)}\)</td><td>\(\mu\)</td><td>\(\sigma^2\)</td></tr>
+                        <tr><td>指数分布</td><td>\(\lambda e^{-\lambda x}\)，\(x \geq 0\)</td><td>\(1/\lambda\)</td><td>\(1/\lambda^2\)</td></tr>
+                        <tr><td>伽马分布</td><td>\(\frac{\lambda e^{-\lambda x}(\lambda x)^{\alpha-1}}{\Gamma(\alpha)}\)</td><td>\(\alpha/\lambda\)</td><td>\(\alpha/\lambda^2\)</td></tr>
+                        <tr><td>贝塔分布</td><td>\(\frac{\Gamma(\alpha+\beta)}{\Gamma(\alpha)\Gamma(\beta)}x^{\alpha-1}(1-x)^{\beta-1}\)</td><td>\(\frac{\alpha}{\alpha+\beta}\)</td><td>\(\frac{\alpha\beta}{(\alpha+\beta+1)(\alpha+\beta)^2}\)</td></tr>
+                    </tbody>
+                </table>
+
+                <h3 class="problem-title">相遇概率</h3>
+                <p>两位银行家各自在5:00到6:00之间的随机时间到达车站，各停留5分钟。他们相遇的概率是多少？</p>
+                <details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+                    <p>设到达时间为 \(X\) 和 \(Y\)，均在 [0,60] 上均匀分布。相遇条件：\(|X-Y| \leq 5\)。</p>
+                    <p>概率 = 阴影区域面积 / 正方形面积：</p>
+                    \[P = \frac{60^2 - 2 \times \frac{1}{2} \times 55^2}{60^2} = \frac{60^2 - 55^2}{60^2} = \frac{(60+55)(60-55)}{60^2} = \frac{23}{144}\]
+                </div></details>
+
+                <h3 class="problem-title">三角形概率</h3>
+                <p>一根棍子被随机切两刀，3段能组成三角形的概率是多少？</p>
+                <details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+                    <p>设棍子长度为1，切割位置为 \(x\) 和 \(y\)。若 \(x < y\)，三段为 \(x\)、\(y-x\)、\(1-y\)。三角不等式要求：</p>
+                    \[y > 1/2, \quad y < 1/2 + x, \quad x < 1/2\]
+                    <p>对应正方形中的三角形面积。利用对称性（\(x > y\) 的情况对称），总概率为 <strong>1/4</strong>。</p>
+                </div></details>
+
+                <h3 class="problem-title">泊松过程的性质</h3>
+                <p>公交车按泊松过程到达（平均10分钟一班）。你在随机时间到达车站，期望等待时间是多少？上一班车是多少分钟前离开的？</p>
+                <details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+                    <p>指数分布具有<strong>无记忆性</strong>：\(P\{\tau > s + t \mid \tau > s\} = P(\tau > t)\)</p>
+                    <p>利用无记忆性，期望等待时间为 \(1/\lambda = 10\) 分钟。往回看，无记忆性仍然适用，上一班车平均也是 <strong>10分钟前</strong> 到达的。</p>
+                    <p>这看似矛盾（间隔应为20分钟？），但解释是：当你在随机时间到达时，你更可能处于长间隔中。对于一般分布，期望剩余等待时间为 \(\frac{E[X^2]}{2E[X]}\)。</p>
+                </div></details>
+
+                <h3 class="problem-title">正态分布的矩</h3>
+                <p>如果 \(X \sim N(0,1)\)，当 \(n = 1, 2, 3, 4\) 时，\(E[X^n]\) 是多少？</p>
+                <details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+                    <p>使用矩生成函数 \(M(t) = E[e^{tX}] = e^{t^2/2}\)，其中 \(M^{(n)}(0) = E[X^n]\)：</p>
+                    \[M'(t) = te^{t^2/2} \Rightarrow E[X] = M'(0) = 0\]
+                    \[M''(t) = e^{t^2/2} + t^2e^{t^2/2} \Rightarrow E[X^2] = M''(0) = 1\]
+                    \[M'''(0) = 0 \Rightarrow E[X^3] = 0\]
+                    \[M^{(4)}(0) = 3 \Rightarrow E[X^4] = 3\]
+                    <p>即：均值=0，方差=1，偏度=0，峰度=3。</p>
+                </div></details>
+            </section>
+
+            <!-- 4.5 期望值、方差与协方差 -->
+            <section id="sec-4-5">
+                <h2>4.5 期望值、方差与协方差</h2>
+                <p>基本知识：</p>
+                <ul>
+                    <li>\(E[X_1 + \cdots + X_n] = E[X_1] + \cdots + E[X_n]\)（无论是否独立）</li>
+                    <li>若 \(X, Y\) 独立：\(E[g(X)h(Y)] = E[g(X)]E[h(Y)]\)</li>
+                    <li>协方差：\(Cov(X,Y) = E[XY] - E[X]E[Y]\)</li>
+                    <li>相关系数：\(\rho(X,Y) = \frac{Cov(X,Y)}{\sqrt{Var(X)Var(Y)}}\)</li>
+                    <li>\(Var\left(\sum_{i=1}^{n}X_i\right) = \sum_{i=1}^{n}Var(X_i) + 2\sum_{i<j}Cov(X_i, X_j)\)</li>
+                </ul>
+                <p><strong>全期望公式：</strong>\(E[X] = E[E[X|Y]]\)</p>
+
+                <h3 class="problem-title">连接面条</h3>
+                <p>碗里有100根面条。蒙眼取出两个端头连接，直到没有自由端头。期望形成多少个圆环？</p>
+                <details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+                    <p>对 \(n\) 根面条，有 \(\binom{2n}{2} = n(2n-1)\) 种选择。其中 \(n\) 种会产生1个圆环，概率为 \(\frac{1}{2n-1}\)。</p>
+                    <p>递推：\(E[f(n)] = E[f(n-1)] + \frac{1}{2n-1}\)</p>
+                    <p>因此：</p>
+                    \[E[f(n)] = 1 + \frac{1}{3} + \frac{1}{5} + \cdots + \frac{1}{2n-1}\]
+                    <p>对于100根面条：\(E[f(100)] = 1 + \frac{1}{3} + \frac{1}{5} + \cdots + \frac{1}{199}\)</p>
+                </div></details>
+
+                <h3 class="problem-title">最优对冲比率（Optimal Hedge Ratio）</h3>
+                <p>买入一股 \(A\)，做空 \(h\) 股 \(B\) 来对冲。最小化方差的 \(h\) 是多少？</p>
+                <details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+                    <p>投资组合方差：</p>
+                    \[var(r_A - hr_B) = \sigma_A^2 - 2\rho h\sigma_A\sigma_B + h^2\sigma_B^2\]
+                    <p>对 \(h\) 求导令其为零：</p>
+                    \[\frac{\partial var}{\partial h} = -2\rho\sigma_A\sigma_B + 2h\sigma_B^2 = 0\]
+                    \[h = \rho\frac{\sigma_A}{\sigma_B}\]
+                </div></details>
+
+                <h3 class="problem-title">骰子游戏</h3>
+                <p>掷骰子，掷出的点数是报酬。掷出4、5或6可以再掷一次，掷出1、2或3则游戏结束。期望收益是多少？</p>
+                <details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+                    <p>设 \(E[X]\) 为期望收益，\(Y\) 为第一次投掷结果。</p>
+                    <p>若 \(Y \in \{1,2,3\}\)（概率1/2）：期望值为2</p>
+                    <p>若 \(Y \in \{4,5,6\}\)（概率1/2）：期望值为 \(5 + E[X]\)</p>
+                    \[E[X] = \frac{1}{2} \times 2 + \frac{1}{2} \times (5 + E[X]) \Rightarrow E[X] = 7\]
+                </div></details>
+
+                <h3 class="problem-title">纸牌游戏（期望翻牌数）</h3>
+                <p>从52张牌中，期望翻多少张牌才能看到第一张A？</p>
+                <details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+                    <p>有4张A和48张其他牌。设 \(X_i = 1\) 如果牌 \(i\) 在所有A之前被翻到。</p>
+                    <p>每张牌同样可能位于4张A分隔的5个区域中的任何一个，所以 \(E[X_i] = 1/5\)。</p>
+                    \[E[X] = 1 + \sum_{i=1}^{48}E[X_i] = 1 + \frac{48}{5} = 10.6\]
+                </div></details>
+
+                <h3 class="problem-title">随机变量之和</h3>
+                <p>设 \(X_1, \cdots, X_n\) 为 [0,1] 上的IID均匀分布。\(P(S_n = X_1 + \cdots + X_n \leq 1)\) 是多少？</p>
+                <details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+                    <p>从简单情况开始：\(P(S_1 \leq 1) = 1\)，\(P(S_2 \leq 1) = 1/2\)，\(P(S_3 \leq 1) = 1/6\)。</p>
+                    <p>猜测 \(P(S_n \leq 1) = 1/n!\)。用归纳法证明：</p>
+                    \[P(S_{n+1} \leq 1) = \int_0^1 \frac{(1-X_{n+1})^n}{n!}dX_{n+1} = \frac{1}{n!} \times \frac{1}{n+1} = \frac{1}{(n+1)!}\]
+                    <p>答案：\(P(S_n \leq 1) = \frac{1}{n!}\)</p>
+                </div></details>
+
+                <h3 class="problem-title">优惠券收集（Coupon Collection）</h3>
+                <p><strong>A：</strong>\(N\) 种优惠券，收集一套完整的平均需要多少张？<br><strong>B：</strong>已收集 \(n\) 张，不同类型的期望数量？</p>
+                <details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+                    <p><strong>A部分：</strong>设 \(X_i\) 为获得第 \(i\) 种不同优惠券所需的额外数量。\(X_i\) 服从参数 \(p = (N-i+1)/N\) 的几何分布。</p>
+                    \[E[X] = \sum_{i=1}^{N}\frac{N}{N-i+1} = N\left(\frac{1}{N} + \frac{1}{N-1} + \cdots + 1\right) = N \cdot H_N\]
+                    <p><strong>B部分：</strong>引入指示变量 \(I_i\)。没有一张是第 \(i\) 种类型的概率为 \(\left(\frac{N-1}{N}\right)^n\)。</p>
+                    \[E[Y] = N - N\left(\frac{N-1}{N}\right)^n\]
+                </div></details>
+
+                <h3 class="problem-title">联合违约概率（Joint Default Probability）</h3>
+                <p>债券A违约概率50%，债券B违约概率30%。至少一只违约的概率范围？相关系数范围？</p>
+                <details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+                    <p><strong>概率范围：</strong></p>
+                    <ul>
+                        <li>最大值：\(50\% + 30\% = 80\%\)（A、B互斥违约）</li>
+                        <li>最小值：\(50\%\)（B违约时A必违约）</li>
+                    </ul>
+                    <p><strong>相关系数：</strong></p>
+                    <p>\(var(I_A) = 0.25\)，\(var(I_B) = 0.21\)</p>
+                    \[P(A \cup B) = 0.65 + \rho_{AB}\frac{\sqrt{0.21}}{2}\]
+                    <p>最大概率时：\(\rho_{AB} = -\sqrt{3/7}\)</p>
+                    <p>最小概率时：\(\rho_{AB} = \sqrt{3/7}\)</p>
+                    <p>相关系数范围：\(\left[-\sqrt{3/7},\ \sqrt{3/7}\right]\)</p>
+                </div></details>
+            </section>
+
+            <!-- 4.6 顺序统计量 -->
+            <section id="sec-4-6">
+                <h2>4.6 顺序统计量</h2>
+                <p>设 \(X\) 为具有cdf \(F_X(x)\) 的随机变量，\(n\) 个IID随机变量的最小值和最大值分布为：</p>
+                \[f_{Y_n}(x) = nf_X(x)(1-F_X(x))^{n-1} \quad (\text{最小值})\]
+                \[f_{Z_n}(x) = nf_X(x)(F_X(x))^{n-1} \quad (\text{最大值})\]
+
+                <h3 class="problem-title">最大值和最小值的期望</h3>
+                <p>设 \(X_1, \cdots, X_n\) 为 [0,1] 上的IID均匀分布。求 \(\max\) 和 \(\min\) 的cdf、pdf和期望值。</p>
+                <details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+                    <p><strong>最大值 \(Z_n\)：</strong></p>
+                    \[F_{Z_n}(x) = x^n, \quad f_{Z_n}(x) = nx^{n-1}\]
+                    \[E[Z_n] = \int_0^1 nx^n dx = \frac{n}{n+1}\]
+                    <p><strong>最小值 \(Y_n\)：</strong></p>
+                    \[F_{Y_n}(x) = 1-(1-x)^n, \quad f_{Y_n}(x) = n(1-x)^{n-1}\]
+                    \[E[Y_n] = \frac{1}{n+1}\]
+                </div></details>
+
+                <h3 class="problem-title">最大值和最小值的相关系数</h3>
+                <p>设 \(X_1, X_2\) 为 [0,1] 上的IID均匀分布，\(Y = \min(X_1,X_2)\)，\(Z = \max(X_1,X_2)\)。求 \(P(Y \geq y \cap Z \leq z)\) 和 \(Y, Z\) 的相关系数。</p>
+                <details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+                    <p>满足 \(Y \geq y\) 且 \(Z \leq z\) 的区域面积为 \((z-y)^2\)（当 \(y \leq z\) 时）。</p>
+                    \[P(Y \geq y \cap Z \leq z) = (z-y)^2\]
+                    <p>计算相关系数：</p>
+                    <ul>
+                        <li>\(E[Y] = 1/3\)，\(E[Z] = 2/3\)</li>
+                        <li>\(var(Y) = var(Z) = 1/18\)</li>
+                        <li>\(E[YZ] = E[X_1 X_2] = 1/4\)</li>
+                        <li>\(cov(Y,Z) = 1/4 - 1/3 \times 2/3 = 1/36\)</li>
+                    </ul>
+                    \[corr(Y,Z) = \frac{1/36}{\sqrt{1/18 \times 1/18}} = \frac{1/36}{1/18} = \frac{1}{2}\]
+                </div></details>
+
+                <h3 class="problem-title">随机蚂蚁</h3>
+                <p>500只蚂蚁随机放在1英尺绳子上，各自随机选方向以1英尺/分钟的速度移动。迎面相撞时立即改变方向。所有蚂蚁掉落的期望时间是多少？</p>
+                <details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+                    <p><strong>关键洞察：</strong>当两只蚂蚁相撞改变方向时，如果交换标签，就好像碰撞从未发生——每只蚂蚁只是继续朝原方向走。</p>
+                    <p>由对称性，每只蚂蚁朝哪个方向走都无区别。若蚂蚁在位置 \(x\)，其掉落时间为 \(\max(x, 1-x)\)。</p>
+                    <p>问题等价于：500个 [0,1] 上IID均匀随机变量的最大值的期望。</p>
+                    \[E[Z_{500}] = \frac{500}{501} \approx 0.998 \text{ 分钟}\]
+                    <div class="hint">提示：如果我们交换两只相撞蚂蚁的标签，就好像碰撞从未发生过一样。</div>
+                </div></details>
+            </section>
+        </article>
+        <nav class="chapter-nav">
+            <a href="chapter3.html" class="prev">第3章 微积分与线性代数</a>
+            <a href="chapter5.html" class="next">第5章 随机过程与随机微积分</a>
+        </nav>
+    </main>
+
+    <script>
+        function toggleSidebar() {
+            document.querySelector('.sidebar').classList.toggle('active');
+            document.querySelector('.sidebar-overlay').classList.toggle('active');
+        }
+    </script>
+</body>
+</html>

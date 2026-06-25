@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 6 - A Practical Guide to Quantitative Finance Interviews</title>
+    <link rel="stylesheet" href="styles.css">
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+    <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+    <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
+
+    <nav class="sidebar">
+        <div class="sidebar-header">
+            <h2><a href="index.html">A Practical Guide to Quantitative Finance Interviews</a></h2>
+        </div>
+        <div class="sidebar-nav">
+            <ul>
+                <li><a href="index.html">首页</a></li>
+                <li class="chapter-title">章节目录</li>
+                <li><a href="chapter1.html">第1章 一般原则</a></li>
+                <li><a href="chapter2.html">第2章 智力题</a></li>
+                <li><a href="chapter3.html">第3章 微积分与线性代数</a></li>
+                <li><a href="chapter4.html">第4章 概率论</a></li>
+                <li><a href="chapter5.html">第5章 随机过程与随机微积分</a></li>
+                <li><a href="chapter6.html" class="active">第6章 金融</a></li>
+                <li><a href="chapter7.html">第7章 算法与数值方法</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="content">
+        <nav class="breadcrumb">
+            <a href="index.html">首页</a>
+            <span>›</span>
+            第6章 金融
+        </nav>
+        <article>
+
+<h1>第六章 金融</h1>
+<p>除了经典教科书外，本章的重点更多是衍生品定价背后的直觉和数学，而不是基础金融知识。衍生品问题在量化面试中很受欢迎——即使对于与衍生品市场没有直接关联的部门也是如此——因为这些问题足够复杂，可以测试你对量化金融的理解。</p>
+
+<section id="sec-6-1">
+<h2>6.1 期权定价（Option Pricing）</h2>
+
+<p>符号说明：\(T\)到期日；\(t\)当前时间；\(\tau = T-t\)到期时间；\(S\)股价；\(r\)无风险利率；\(y\)股息收益率；\(\sigma\)波动率；\(c/p\)欧式看涨/看跌价格；\(C/P\)美式看涨/看跌价格；\(K\)行权价。</p>
+
+<h3 class="problem-title">期权的价格方向</h3>
+<p>当 \(S\)、\(K\)、\(\tau\)、\(\sigma\)、\(r\) 或 \(D\) 变化时，期权价格如何变化？</p>
+
+<details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+<table>
+<thead><tr><th>变量</th><th>欧式看涨</th><th>欧式看跌</th><th>美式看涨</th><th>美式看跌</th></tr></thead>
+<tbody>
+<tr><td>股价 ↑</td><td>↑</td><td>↓</td><td>↑</td><td>↓</td></tr>
+<tr><td>行权价 ↑</td><td>↓</td><td>↑</td><td>↓</td><td>↑</td></tr>
+<tr><td>到期时间 ↑</td><td>?</td><td>?</td><td>↑</td><td>↑</td></tr>
+<tr><td>波动率 ↑</td><td>↑</td><td>↑</td><td>↑</td><td>↑</td></tr>
+<tr><td>无风险利率 ↑</td><td>↑</td><td>↓</td><td>↑</td><td>↓</td></tr>
+<tr><td>股息 ↑</td><td>↓</td><td>↑</td><td>↓</td><td>↑</td></tr>
+</tbody>
+</table>
+<p>到期时间对欧式期权的影响不确定：深度实值看跌较短期限更有价值；除息日前到期的短期看涨可能更值钱。</p>
+</div></details>
+
+<h3 class="problem-title">看跌-看涨平价（Put-Call Parity）</h3>
+<p>写出无股息股票的欧式期权看跌-看涨平价并证明。</p>
+
+<details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+<p>\(c + Ke^{-r\tau} = p + S\)</p>
+<p><strong>证明：</strong>组合A（看涨 + 零息债券面值K）和组合B（看跌 + 股票）在到期日收益都是 \(\max(S_T, K)\)。由无套利，两者现值相等。</p>
+<p>改写为 \(c - p = S - Ke^{-r\tau}\)：做多看涨+做空看跌 = 远期合约（交割价K）。当 \(K = Se^{r\tau}\)（远期价格）时，\(c = p\)。</p>
+</div></details>
+
+<h3 class="problem-title">美式期权 vs. 欧式期权</h3>
+<p><strong>A.</strong> 为什么无股息股票的美式看涨期权不应提前行权？</p>
+
+<details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+<p><strong>论点1（时间价值）：</strong>看涨价值 = 内在价值 \((S-K)\) + 行权价时间价值 \((K-Ke^{-r\tau})\) + 看跌保护价值 \(p > 0\)。卖出期权总比行权好。</p>
+<p><strong>论点2（替代策略）：</strong>持有看涨、卖空股票、借出K。时刻t现金流同行权（\(S-K\)），但到期时有额外正收益。</p>
+<p><strong>论点3（詹森不等式）：</strong>看涨收益是S的凸函数。\(C(S_t) \leq e^{-r\tau}\tilde{E}[C(S_T)]\)，到期前行权不最优。</p>
+<p>注：美式看跌提前行权可能最优（\(P(0) = K \neq 0\)）。</p>
+</div></details>
+
+<p><strong>B.</strong> K=80看跌\$8，K=90看跌\$9。是否存在套利？</p>
+<details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+<p>看跌价格是行权价的凸函数：\(8/9 \times P(90) = 8 \geq P(80) = 8\)。K=80看跌被高估。</p>
+<p>套利组合：卖空9份K=80看跌，做多8份K=90看跌。初始现金流=0。</p>
+<ul>
+<li>\(S_T \geq 90\)：收益 = 0</li>
+<li>\(90 > S_T \geq 80\)：收益 = \(8(90-S_T) > 0\)</li>
+<li>\(S_T < 80\)：收益 = \(8(90-S_T) - 9(80-S_T) = S_T > 0\)</li>
+</ul>
+</div></details>
+
+<h3 class="problem-title">Black-Scholes-Merton 微分方程</h3>
+<p>写出BSM微分方程并简要解释如何推导。</p>
+
+<details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+<p>股价遵循 \(dS = \mu S\,dt + \sigma S\,dW(t)\)，衍生品 \(V = V(S,t)\)，BSM方程：</p>
+\[\frac{\partial V}{\partial t} + rS\frac{\partial V}{\partial S} + \frac{1}{2}\sigma^2 S^2\frac{\partial^2 V}{\partial S^2} = rV\]
+<p><strong>推导：</strong>构建组合 \(\Pi = V - \frac{\partial V}{\partial S}S\)：</p>
+\[d\Pi = \left(\frac{\partial V}{\partial t} + \frac{1}{2}\sigma^2 S^2\frac{\partial^2 V}{\partial S^2}\right)dt\]
+<p>无风险组合应获得无风险收益：\(d\Pi = r\Pi\,dt\)，代入即得BSM方程。</p>
+</div></details>
+
+<h3 class="problem-title">Black-Scholes公式</h3>
+<p>带连续股息率 \(y\) 的欧式期权BS公式：</p>
+\[c = Se^{-y\tau}N(d_1) - Ke^{-r\tau}N(d_2)\]
+\[d_1 = \frac{\ln(S/K) + (r-y+\sigma^2/2)\tau}{\sigma\sqrt{\tau}}, \quad d_2 = d_1 - \sigma\sqrt{\tau}\]
+
+<p><strong>A.</strong> BS公式的假设？</p>
+<details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+<ol>
+<li>股票不支付股息</li>
+<li>无风险利率为常数</li>
+<li>股价遵循几何布朗运动（常数漂移和波动率）</li>
+<li>无交易成本或税收</li>
+<li>证券完全可分</li>
+<li>无套利机会</li>
+</ol>
+</div></details>
+
+<p><strong>B.</strong> 使用风险中性概率推导BS公式。</p>
+<details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+<p>风险中性下 \(dS = rS\,dt + \sigma S\,dW\)。由伊藤引理：</p>
+\[S_T = Se^{(r-\sigma^2/2)\tau + \sigma\sqrt{\tau}\varepsilon}, \quad \varepsilon \sim N(0,1)\]
+<p>看涨期权实值条件：\(\varepsilon > -d_2\)。贴现期望收益：</p>
+\[V(t) = e^{-r\tau}E[\max(S_T-K,0)] = e^{-r\tau}\int_{-d_2}^{\infty}(Se^{(r-\sigma^2/2)\tau+\sigma\sqrt{\tau}\varepsilon}-K)\frac{e^{-\varepsilon^2/2}}{\sqrt{2\pi}}d\varepsilon\]
+<p>令 \(\tilde{\varepsilon} = \varepsilon - \sigma\sqrt{\tau}\)，化简得 \(V = SN(d_1) - Ke^{-r\tau}N(d_2)\)。</p>
+<p>\(N(d_2)\) 是看涨期权在风险中性下到期为实值的概率。</p>
+</div></details>
+
+<p><strong>C.</strong> 通过PDE方法推导BS公式。</p>
+<details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+<p>令 \(y = \ln S\)，\(\tilde{\tau} = T-t\)，再令 \(u = e^{r\tilde{\tau}}V\)，\(x = y + (r-\sigma^2/2)\tilde{\tau}\)。BSM方程变为热方程：</p>
+\[\frac{\partial u}{\partial \tau} = \frac{1}{2}\sigma^2\frac{\partial^2 u}{\partial x^2}\]
+<p>边界条件 \(u_0 = \max(e^\psi - K, 0)\)，应用热方程通解得到与风险中性定价相同的结果。</p>
+</div></details>
+
+<p><strong>D.</strong> 零利率，股价\$1，达到\$H时支付\$1的期权价值？</p>
+<details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+<p><strong>鞅方法：</strong>利用指数鞅，设 \(\lambda = \sigma\)，消去时间项后，\(S\) 达到 \(H\) 的概率 = \(1/H\)。</p>
+<p><strong>无套利论证：</strong>购买 \(1/H\) 股股票（成本\$1/H），当股价到\$H时卖出获得\$1。期权价值恰好是 <strong>\$1/H</strong>。</p>
+</div></details>
+
+<p><strong>E.</strong> 到期支付股价倒数的合约价值？</p>
+<details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+<p>令 \(V = 1/S\)，对其应用伊藤引理：\(dV = (-r+\sigma^2)V\,dt - \sigma V\,dW\)。</p>
+<p>\(V\) 也服从几何布朗运动：\(d(\ln V) = (-r+\sigma^2/2)dt - \sigma\,dW\)。</p>
+<p>因此 \(E[V_T] = \frac{1}{S}e^{(-r+\sigma^2)\tau}\)，贴现后：</p>
+\[V = e^{-r\tau}E[V_T] = \frac{1}{S}e^{(-2r+\sigma^2)\tau}\]
+</div></details>
+</section>
+
+<section id="sec-6-2">
+<h2>6.2 希腊字母（The Greeks）</h2>
+
+<p>\(\Delta = \frac{\partial f}{\partial S}\)，\(\Gamma = \frac{\partial^2 f}{\partial S^2}\)，\(\Theta = \frac{\partial f}{\partial t}\)，\(\nu = \frac{\partial f}{\partial \sigma}\)，\(\rho = \frac{\partial f}{\partial r}\)</p>
+
+<h3 class="problem-title">Delta</h3>
+<p><strong>A.</strong> 推导无股息看涨期权的delta。</p>
+
+<details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+<p>\(\Delta = N(d_1)\)。注意 \(N(d_1)\) 和 \(N(d_2)\) 都是 \(S\) 的函数：</p>
+\[\frac{\partial c}{\partial S} = N(d_1) + S\frac{\partial N(d_1)}{\partial S} - Ke^{-r\tau}\frac{\partial N(d_2)}{\partial S}\]
+<p>经计算 \(\frac{\partial N(d_2)}{\partial S} = \frac{S}{K}e^{r\tau}\frac{\partial N(d_1)}{\partial S}\)，因此后两项相消，\(\Delta = N(d_1)\)。</p>
+</div></details>
+
+<p><strong>B.</strong> 平值看涨期权的delta估计？接近到期时的变化？</p>
+<details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+<p>\(S = K\) 时，\(d_1 = (\frac{r}{\sigma}+\frac{\sigma}{2})\sqrt{\tau} > 0\)，所以 \(\Delta = N(d_1) > 0.5\)。</p>
+<p>当 \(\tau \to 0\) 时，\(d_1 \to 0\)，\(\Delta \to N(0) = 0.5\)。</p>
+</div></details>
+
+<p><strong>C.</strong> 如何Delta对冲看涨期权多头？股价上涨后如何重平衡？</p>
+<details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+<p>卖空 \(\Delta = e^{-y\tau}N(d_1)\) 股股票。\(S\) 上升 → \(d_1\) 上升 → \(\Delta\) 上升 → 需卖空更多股票。</p>
+</div></details>
+
+<p><strong>D.</strong> 估计平值看涨期权价值（低利率，短期限）。</p>
+<details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+<p>当 \(S = K\)，\(r \approx 0\)，短 \(\tau\) 时，\(d_1\) 和 \(d_2\) 接近0：</p>
+\[c \approx S \times \frac{\sigma\sqrt{\tau}}{\sqrt{2\pi}} \approx 0.4\sigma S\sqrt{\tau}\]
+<p>实务中波动率交易员用此公式估算隐含波动率。</p>
+</div></details>
+
+<h3 class="problem-title">Gamma</h3>
+<p>平值期权接近到期时gamma会怎样？</p>
+
+<details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+<p>\(\Gamma = \frac{N'(d_1)e^{-y\tau}}{S\sigma\sqrt{\tau}}\)，对看涨看跌都为正。</p>
+<p>平值时gamma最高。当 \(\tau \to 0\)：分子 → \(1/\sqrt{2\pi}\)，分母 → 0，所以 \(\Gamma \to \infty\)。Delta变成阶跃函数，对冲极其困难。</p>
+</div></details>
+
+<h3 class="problem-title">Theta</h3>
+<p><strong>A.</strong> 欧式期权何时有正的theta？</p>
+
+<details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+<p>深度实值欧式看跌期权：\(\Theta \approx rKe^{-r\tau} > 0\)（这也是提前行权深度实值美式看跌可能最优的原因）。</p>
+<p>高股息深度实值欧式看涨期权：\(ySe^{-y\tau}N(d_1)\) 项可使 \(\Theta > 0\)。</p>
+</div></details>
+
+<p><strong>B.</strong> Delta中性看涨多头组合，股价变动时价值如何？是套利吗？</p>
+<details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+<p>组合delta中性、做多gamma → 股价上涨或下跌都增加组合价值（凸性）。</p>
+<p><strong>不是套利。</strong>由BSM方程：\(\Theta + \frac{1}{2}\sigma^2 S^2\Gamma = rV\)。正gamma对应负theta：价格不动时，时间流逝使价值下降。这是gamma和theta的权衡。</p>
+</div></details>
+
+<h3 class="problem-title">Vega</h3>
+<p><strong>A.</strong> 解释隐含波动率和波动率微笑。</p>
+
+<details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+<p>隐含波动率：使模型价格=市场价格的波动率。波动率微笑：实值和虚值期权隐含波动率高于平值。对股票通常表现为偏斜（随行权价升高而下降）。</p>
+<p>含义：BS模型假设常数波动率的对数正态分布不准确。实际中波动率是随机过程，且存在跳跃。</p>
+</div></details>
+
+<p><strong>B.</strong> 常数波动率30% vs 均值30%的随机波动率，哪个期权更贵？</p>
+<details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+<p>看涨期权价格通常是 \(\sigma\) 的凸函数（\(d_1 d_2 > 0\) 时），由詹森不等式 \(E[c(\sigma)] \geq c(E[\sigma])\)。大多数情况下随机波动率使期权更贵。</p>
+<p>但当 \(d_1 > 0, d_2 < 0\)（接近平值）时，Volga \(= \nu \frac{d_1 d_2}{\sigma} < 0\)，函数非凸，常数波动率可能更贵。</p>
+</div></details>
+
+<p><strong>C.</strong> 已知所有行权价的欧式看涨价格，能否确定风险中性密度？</p>
+<details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+<p>由 \(c = e^{-r\tau}\int_K^{\infty}(s-K)f_{S_T}(s)ds\)，对K求二阶导：</p>
+\[f_{S_T}(K) = e^{r\tau}\frac{\partial^2 c}{\partial K^2}\]
+<p>即Breeden-Litzenberger公式：风险中性密度函数等于看涨价格对行权价二阶导数的 \(e^{r\tau}\) 倍。</p>
+</div></details>
+</section>
+
+<section id="sec-6-3">
+<h2>6.3 期权组合与奇异期权（Option Portfolios and Exotic Options）</h2>
+
+<h3 class="problem-title">牛市价差（Bull Spread）</h3>
+<p>牛市看涨价差的价格边界是什么？</p>
+
+<details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+<p>做多 \(c_1\)（行权价 \(K_1\)），卖空 \(c_2\)（行权价 \(K_2\)），\(K_1 < K_2\)。</p>
+<p>到期收益上限为 \(K_2 - K_1\)，因此：</p>
+\[0 \leq c_1 - c_2 \leq e^{-rT}(K_2 - K_1)\]
+<p>收益还受 \(\frac{K_2-K_1}{K_2}S_T\) 限制，价格上界也有 \(\frac{K_2-K_1}{K_2}S\)。</p>
+</div></details>
+
+<h3 class="problem-title">跨式（Straddle）</h3>
+<p>解释跨式及其用途。</p>
+
+<details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+<p>跨式 = 同行权价同到期的看涨+看跌多头。收益 \(= |S_T - K|\)。</p>
+<p>用途：押注大幅波动或做多波动率。平值时 \(c \approx p \approx 0.4\sigma_i S\sqrt{\tau}\)。若已实现波动率 \(\sigma_r > \sigma_i\)，两期权都被低估。</p>
+<p>缺点：非纯波动率押注（delta会偏离0）。纯波动率押注应用方差互换：收益 \(= N(\sigma_r^2 - K_{var})\)。</p>
+</div></details>
+
+<h3 class="problem-title">二元期权（Binary Options）</h3>
+<p>现金或无看涨期权的价格和对冲方法？</p>
+
+<details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+<p>价格：\(c_B = e^{-r\tau}N(d_2)\)（到期为实值的风险中性概率的贴现值）。</p>
+<p>Delta对冲：\(\Delta = \frac{e^{-r\tau}N'(d_2)}{S\sigma\sqrt{\tau}}\)。当 \(\tau \to 0\) 且 \(S \approx K\) 时delta极不稳定，对冲实际不可能。</p>
+<p>替代：用牛市价差（\(1/2\varepsilon\) 份 \(K-\varepsilon\) 看涨 - \(1/2\varepsilon\) 份 \(K+\varepsilon\) 看涨）复制。\(\varepsilon \to 0\) 时精确复制，但需大量期权。</p>
+</div></details>
+
+<h3 class="problem-title">交换期权（Exchange Options）</h3>
+<p>到期支付 \(\max(S_{T,1} - S_{T,2}, 0)\) 的期权定价（相关系数 \(\rho\)）。</p>
+
+<details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+<p>使用计价物变换。令 \(f = S_2/S_1\)，由伊藤引理 \(f\) 也是几何布朗运动。</p>
+<p>令 \(f\) 成为鞅，交换期权（以 \(S_1\) 为计价物）变为标准看涨期权：</p>
+<ul>
+<li>标的 \(= S_2/S_1\)，行权价 \(= 1\)，利率 \(= 0\)</li>
+<li>波动率 \(\sigma_S = \sqrt{\sigma_1^2 - 2\rho\sigma_1\sigma_2 + \sigma_2^2}\)</li>
+</ul>
+<p>最终价值（本地货币）：</p>
+\[C = S_2 N(d_1) - S_1 N(d_2)\]
+\[d_1 = \frac{\ln(S_2/S_1) + 0.5\sigma_S^2\tau}{\sigma_S\sqrt{\tau}}, \quad d_2 = d_1 - \sigma_S\sqrt{\tau}\]
+</div></details>
+</section>
+
+<section id="sec-6-4">
+<h2>6.4 其他金融问题（Other Finance Questions）</h2>
+
+<h3 class="problem-title">投资组合优化（Portfolio Optimization）</h3>
+<p>两只股票期望收益均12%，标准差20%和30%，相关系数50%。如何分配以最小化风险？</p>
+
+<details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+<p>均值-方差优化：\(\min_w \text{var}(r_p) = \sigma_A^2 w_A^2 + \sigma_B^2(1-w_A)^2 + 2\rho\sigma_A\sigma_B w_A(1-w_A)\)</p>
+<p>一阶条件：</p>
+\[w_A = \frac{\sigma_B^2 - \rho\sigma_A\sigma_B}{\sigma_A^2 - 2\rho\sigma_A\sigma_B + \sigma_B^2} = \frac{0.09 - 0.03}{0.04 - 0.06 + 0.09} = \frac{6}{7}\]
+<p>将 <strong>6/7</strong> 投资于A，<strong>1/7</strong> 投资于B。</p>
+</div></details>
+
+<h3 class="problem-title">风险价值（Value at Risk）</h3>
+<p>什么是VaR？用VaR度量衍生品风险的缺点？</p>
+
+<details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+<p>VaR：在目标时间范围内的最大损失，使实际损失超过该值的概率为预设的小概率（如5%或1%）。数学上是利润分布的负百分位数。</p>
+<p><strong>缺点：</strong></p>
+<ol>
+<li>不描述尾部损失形状（例：违约概率3%的CDS，95%VaR=0但实际面临信用风险）</li>
+<li>不具有次可加性：\(VaR(A+B)\) 可能 \(> VaR(A) + VaR(B)\)，违背分散化原则</li>
+<li>不是一致性风险度量（条件VaR/CVaR才是）</li>
+</ol>
+</div></details>
+
+<h3 class="problem-title">久期与凸性（Duration and Convexity）</h3>
+<p>面值\$100、票息30%-3r、5年到期的反向浮动利率债券的价格和久期？（收益率曲线平坦7.5%）</p>
+
+<details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+<p><strong>现金流复制：</strong>做空3只浮动利率债券 + 做多4只7.5%固定利率债券。</p>
+<p>价格：\(P_{inverse} = 4 \times 100 - 3 \times 100 = \$100\)</p>
+<p>美元久期：</p>
+<ul>
+<li>\(\$D_{floating} = 48.19\)</li>
+<li>\(\$D_{fixed} = 410.64\)</li>
+<li>\(\$D_{inverse} = 4 \times 410.64 - 3 \times 48.19 = 1498\)</li>
+</ul>
+<p>久期：\(D_{inverse} = 1498/100 = \mathbf{14.98}\)</p>
+</div></details>
+
+<h3 class="problem-title">远期与期货（Forwards and Futures）</h3>
+<p>期货和远期的区别？标的与利率正相关时哪个价格更高？</p>
+
+<details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+<p>期货：交易所标准化，每日按市值计价。远期：场外协议，期末结算。</p>
+<p>确定性利率下：\(F = Se^{(r+u-y)\tau}\)，两者价格相同。</p>
+<p>随机利率下，若标的与利率正相关：期货价格上涨时利率高（正收益以高利率再投资），下跌时利率低（负收益以低利率融资）。所以<strong>期货价格更高</strong>。</p>
+</div></details>
+
+<h3 class="problem-title">利率模型（Interest Rate Models）</h3>
+<p>解释基本利率模型及其区别。</p>
+
+<details class="solution"><summary>💡 点击查看解答</summary><div class="solution-content">
+<p><strong>均衡模型（不一定匹配当前期限结构）：</strong></p>
+<ul>
+<li><strong>Vasicek：</strong>\(dR = a(b-R)dt + \sigma\,dW\)。均值回复，但利率可能为负。</li>
+<li><strong>CIR：</strong>\(dR = a(b-R)dt + \sigma\sqrt{R}\,dW\)。均值回复，保证利率为正。</li>
+</ul>
+<p><strong>无套利模型（匹配当前期限结构）：</strong></p>
+<ul>
+<li><strong>Ho-Lee：</strong>\(dr = \theta(t)dt + \sigma\,dz\)。最简单，\(\theta(t)\) 拟合当前曲线。</li>
+<li><strong>Hull-White：</strong>\(dR = a(b(t)-R)dt + \sigma\,dW\)。类似Vasicek但 \(b(t)\) 随时间变化。</li>
+</ul>
+</div></details>
+</section>
+
+        </article>
+        <nav class="chapter-nav">
+            <a href="chapter5.html" class="prev">第5章 随机过程与随机微积分</a>
+            <a href="chapter7.html" class="next">第7章 算法与数值方法</a>
+        </nav>
+    </main>
+
+    <script>
+        function toggleSidebar() {
+            document.querySelector('.sidebar').classList.toggle('active');
+            document.querySelector('.sidebar-overlay').classList.toggle('active');
+        }
+    </script>
+</body>
+</html>

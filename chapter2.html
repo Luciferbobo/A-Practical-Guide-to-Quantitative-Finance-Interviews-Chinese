@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 2 - A Practical Guide to Quantitative Finance Interviews</title>
+    <link rel="stylesheet" href="styles.css">
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+    <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+    <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
+
+    <nav class="sidebar">
+        <div class="sidebar-header">
+            <h2><a href="index.html">A Practical Guide to Quantitative Finance Interviews</a></h2>
+        </div>
+        <div class="sidebar-nav">
+            <ul>
+                <li><a href="index.html">首页</a></li>
+                <li class="chapter-title">章节目录</li>
+                <li><a href="chapter1.html">第1章 一般原则</a></li>
+                <li><a href="chapter2.html" class="active">第2章 智力题</a></li>
+                <li><a href="chapter3.html">第3章 微积分与线性代数</a></li>
+                <li><a href="chapter4.html">第4章 概率论</a></li>
+                <li><a href="chapter5.html">第5章 随机过程与随机微积分</a></li>
+                <li><a href="chapter6.html">第6章 金融</a></li>
+                <li><a href="chapter7.html">第7章 算法与数值方法</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="content">
+        <nav class="breadcrumb">
+            <a href="index.html">首页</a>
+            <span>›</span>
+            第2章 智力题
+        </nav>
+        <article>
+            <h1>第2章 智力题（Brain Teasers）</h1>
+            <p>在本章中，我们涵盖那些只需要常识、逻辑、推理和基础知识的问题——不超过高中水平的数学知识就能解决。从某种意义上说，它们是真正的智力题，而不是伪装成数学问题的题目。尽管这些智力题不需要特定的数学知识，但它们并不比其他量化面试题简单。其中一些问题测试你的分析能力和一般性解题技巧；一些需要你跳出思维定式；而另一些则要求你用基本的数学技巧以创造性的方式解决问题。</p>
+
+            <!-- 2.1 问题简化 -->
+            <section id="section-2-1">
+                <h2>2.1 问题简化（Problem Simplification）</h2>
+                <p>如果原始问题非常复杂以至于你无法立即想出解决方案，试着找到问题的简化版本并从那里开始。通常你可以从最简单的子问题开始，逐步增加复杂度。你不需要在一开始就有一个明确的计划。只需尝试解决最简单的情况并分析你的推理。更多情况下，你会发现一个指导你解决整个问题的模式。</p>
+
+                <h3 class="problem-title">疯狂海盗（Screwy Pirates）</h3>
+                <div class="problem">
+                    <p>五个海盗抢劫了一箱100枚金币。作为一群民主的海盗，他们同意以下方法来分配战利品：</p>
+                    <p>最年长的海盗将提出一种分配方案。所有海盗，<em>包括最年长的海盗</em>，将进行投票。如果至少50%的海盗（在本例中为3个海盗）接受提案，金币将按提议分配。如果不是，最年长的海盗将被喂鲨鱼，流程重新开始，由下一个最年长的海盗继续……流程重复直到一个方案被批准。你可以假设所有海盗都是完全理性的：他们首先想活下来，其次想获得尽可能多的金币。最后，作为嗜血的海盗，在其他条件相同的情况下，他们希望船上的海盗越少越好。</p>
+                    <p><strong>金币最终将如何分配？</strong></p>
+                </div>
+                <details class="solution">
+                    <summary>💡 点击查看解答</summary>
+                    <div class="solution-content">
+                        <p>如果5个海盗的问题看起来复杂，我们可以<em>从问题的简化版本开始</em>，减少海盗的数量。由于1个海盗的情况很简单，让我们从2个海盗开始。年长的海盗（标记为2）可以获得所有金币，因为他总能从自己那里得到50%的投票。</p>
+                        <p>加入海盗3：他知道如果方案被否决，海盗1将一无所获。所以海盗3给海盗1一枚金币并保留99枚，获得海盗1和自己的2票。</p>
+                        <p>加入海盗4：他知道如果方案被否决，海盗2将一无所获。所以海盗4给海盗2一枚金币并保留99枚，以50%投票获批。</p>
+                        <p>5个海盗：他知道如果方案被否决，海盗3和海盗1都将一无所获。所以他给海盗1和海盗3各一枚金币，保留98枚，获得三票（海盗1、海盗3和自己）。</p>
+                        <p>对于任何 \(2n+1\) 个海盗的情况（\(n\) 应小于99），最年长的海盗将给海盗 \(1, 3, \cdots, 2n-1\) 各一枚金币，并将剩余的据为己有。</p>
+                    </div>
+                </details>
+
+                <h3 class="problem-title">老虎和绵羊（Tiger and Sheep）</h3>
+                <div class="problem">
+                    <p>一百只老虎和一只绵羊被放在一个只有草的魔法岛上。老虎可以吃草，但它们更愿意吃绵羊。假设：<em>A</em>. 每次只有一只老虎可以吃绵羊，且吃了绵羊后那只老虎自己会变成一只绵羊。<em>B</em>. 所有老虎都很聪明且完全理性，它们想要活下来。那么绵羊会被吃掉吗？</p>
+                </div>
+                <details class="solution">
+                    <summary>💡 点击查看解答</summary>
+                    <div class="solution-content">
+                        <p>\(n=1\)：老虎吃掉绵羊，无危险。\(n=2\)：如果一只老虎吃了绵羊变成绵羊，会被另一只吃掉，所以都不吃。\(n=3\)：吃了绵羊后剩下2只老虎，不会被吃，所以绵羊被吃。\(n=4\)：吃了变绵羊，剩3只老虎会吃它，所以不吃。</p>
+                        <p>规律：如果老虎的数量是偶数，绵羊不会被吃掉；如果是奇数，绵羊会被吃掉。对于 \(n = 100\)（偶数），<strong>绵羊不会被吃掉</strong>。</p>
+                    </div>
+                </details>
+            </section>
+
+            <!-- 2.2 逻辑推理 -->
+            <section id="section-2-2">
+                <h2>2.2 逻辑推理（Logic Reasoning）</h2>
+
+                <h3 class="problem-title">过河问题（River Crossing）</h3>
+                <div class="problem">
+                    <p>四个人 \(A\)、\(B\)、\(C\) 和 \(D\) 需要过河。过河的唯一方式是一座旧桥，一次最多容纳2人。天很黑，只有一个手电筒，没有手电筒不能过桥。每对人只能以较慢者的速度行走。\(A\) 需要10分钟；\(B\) 需要5分钟；\(C\) 需要2分钟；\(D\) 需要1分钟。让所有人过到对岸的最短时间是多少？</p>
+                </div>
+                <details class="solution">
+                    <summary>💡 点击查看解答</summary>
+                    <div class="solution-content">
+                        <p>关键是让10分钟的人和5分钟的人一起过。步骤：</p>
+                        <ol>
+                            <li>\(C\) 和 \(D\) 先过去（2分钟）</li>
+                            <li>\(D\) 回来送手电筒（1分钟）</li>
+                            <li>\(A\) 和 \(B\) 一起过去（10分钟）</li>
+                            <li>\(C\) 回来送手电筒（2分钟）</li>
+                            <li>\(C\) 和 \(D\) 再次过去（2分钟）</li>
+                        </ol>
+                        <p>总共需要<strong>17分钟</strong>。</p>
+                        <div class="hint"><strong>提示：</strong>关键是要意识到 \(A\) 和 \(B\) 应该一起过桥。</div>
+                    </div>
+                </details>
+
+                <h3 class="problem-title">生日问题（Birthday Problem）</h3>
+                <div class="problem">
+                    <p>你和你的同事知道你们老板 \(A\) 的生日是以下10个日期之一：</p>
+                    <ul>
+                        <li>3月4日，3月5日，3月8日</li>
+                        <li>6月4日，6月7日</li>
+                        <li>9月1日，9月5日</li>
+                        <li>12月1日，12月2日，12月8日</li>
+                    </ul>
+                    <p>\(A\) 只告诉了你月份，只告诉了你的同事 \(C\) 日期。你先说："我不知道 \(A\) 的生日；\(C\) 也不知道。"然后 \(C\) 说："我之前不知道，但现在我知道了。"你说："现在我也知道了。"行政助理听到后写下了 \(A\) 的生日。助理写了什么？</p>
+                </div>
+                <details class="solution">
+                    <summary>💡 点击查看解答</summary>
+                    <div class="solution-content">
+                        <p>在可能的日期中，2和7是唯一出现一次的日期。你确定 \(C\) 不知道，说明月份不是六月（含7日）或十二月（含2日）。</p>
+                        <p>现在 \(C\) 知道月份必须是三月或九月。他能立即确定，说明日期在三月和九月列表中是唯一的（排除了3月5日和9月5日）。剩下：3月4日、3月8日、9月1日。</p>
+                        <p>你能确定，说明月份不是三月（三月有两个候选）。因此 \(A\) 的生日是<strong>9月1日</strong>。</p>
+                    </div>
+                </details>
+
+                <h3 class="problem-title">纸牌游戏（Card Game）</h3>
+                <div class="problem">
+                    <p>赌场用标准52张牌提供游戏：每次翻开两张牌，两张黑色归庄家，两张红色归你，一黑一红丢弃。翻完所有牌后，你的牌多则赢100美元，否则什么都得不到。你愿意付多少钱来玩？</p>
+                </div>
+                <details class="solution">
+                    <summary>💡 点击查看解答</summary>
+                    <div class="solution-content">
+                        <p>无论牌如何排列，你和庄家的牌堆里总是有相同数量的牌。因为每对丢弃的牌都有一张黑牌和一张红牌，等数量的红牌和黑牌被丢弃。剩下给你的红牌数量和庄家的黑牌数量总是相同的。庄家总是赢！所以<strong>不应该付任何钱</strong>。</p>
+                        <div class="hint"><strong>提示：</strong>每对丢弃的牌都有一张黑牌和一张红牌。这对剩余两堆中的牌数量意味着什么？</div>
+                    </div>
+                </details>
+
+                <h3 class="problem-title">燃绳计时（Burning Ropes）</h3>
+                <div class="problem">
+                    <p>你有两根绳子，每根需要1小时才能烧完。每根绳子在不同位置有不同的密度，所以燃烧速度不均匀。你如何用这两根绳子测量45分钟？</p>
+                </div>
+                <details class="solution">
+                    <summary>💡 点击查看解答</summary>
+                    <div class="solution-content">
+                        <p>同时点燃绳子两端，它需要原时间的一半烧完。方法：</p>
+                        <ol>
+                            <li>同时点燃第一根绳子的两端和第二根绳子的一端</li>
+                            <li>30分钟后，第一根绳子烧完，此时点燃第二根绳子的另一端</li>
+                            <li>第二根绳子再烧15分钟烧完，总时间恰好<strong>45分钟</strong></li>
+                        </ol>
+                    </div>
+                </details>
+
+                <h3 class="problem-title">缺陷球（Defective Ball）</h3>
+                <div class="problem">
+                    <p>你有12个相同的球。其中一个比其他球重或轻（不知道是哪种）。只用一个天平，如何用3次测量确定哪个球是缺陷球？</p>
+                </div>
+                <details class="solution">
+                    <summary>💡 点击查看解答</summary>
+                    <div class="solution-content">
+                        <p>关键：将球分成三组而不是两组，因为前两组的比较总是提供关于第三组的信息。</p>
+                        <p>将球1-12分成三组（各4个）。第一次称量1,2,3,4与5,6,7,8。</p>
+                        <p><strong>若平衡：</strong>缺陷球在9-12中。取9,10与8,11比较（8已知正常）。根据结果再做第三次比较即可确定。</p>
+                        <p><strong>若不平衡：</strong>缺陷球在1-8中，且知道哪边轻/重。通过重新分组比较，同样可在第三次确定。</p>
+                        <p>一般规则：已知缺陷球轻重时，\(n\) 次测量可处理最多 \(3^n\) 个球；未知时可处理最多 \((3^n - 3)/2\) 个球。</p>
+                        <div class="hint"><strong>提示：</strong>先对9个相同的球做，已知其中一个比其他球重，只用2次测量。</div>
+                    </div>
+                </details>
+
+                <h3 class="problem-title">末尾零（Trailing Zeros）</h3>
+                <div class="problem">
+                    <p>100!（100的阶乘）有多少个末尾零？</p>
+                </div>
+                <details class="solution">
+                    <summary>💡 点击查看解答</summary>
+                    <div class="solution-content">
+                        <p>每对2和5产生一个末尾零。2的频率远超5，所以5的频率决定末尾零数量。</p>
+                        <p>在 \(1\) 到 \(100\) 中：能被5整除的有20个（\(5,10,...,100\)）；能被 \(25=5^2\) 整除的有4个（\(25,50,75,100\)）。</p>
+                        <p>5的总频率 = 20 + 4 = <strong>24个末尾零</strong>。</p>
+                    </div>
+                </details>
+
+                <h3 class="problem-title">赛马（Horse Race）</h3>
+                <div class="problem">
+                    <p>25匹马，每匹马速度不同且恒定。赛道只有5条跑道。找出3匹最快的马，最少需要多少场比赛？</p>
+                </div>
+                <details class="solution">
+                    <summary>💡 点击查看解答</summary>
+                    <div class="solution-content">
+                        <p><strong>第一轮（5场）：</strong>将25匹马分成5组各赛一场，得到每组内排序。设各组冠军为A1,B1,C1,D1,E1。</p>
+                        <p><strong>第二轮（1场）：</strong>5个组冠军比赛，假设排序为A1&gt;B1&gt;C1&gt;D1&gt;E1。则A1确定第一名。D组、E组全部淘汰；C组只有C1可能入选；B组只有B1、B2可能；A组有A2、A3可能。</p>
+                        <p><strong>第三轮（1场）：</strong>A2、A3、B1、B2、C1比赛确定第2、3名。</p>
+                        <p>总共<strong>7场比赛</strong>。</p>
+                    </div>
+                </details>
+
+                <h3 class="problem-title">无穷序列（Infinite Sequence）</h3>
+                <div class="problem">
+                    <p>如果 \(x^{x^{x^{x^{x\cdots}}}} = 2\)，求 \(x\)？</p>
+                </div>
+                <details class="solution">
+                    <summary>💡 点击查看解答</summary>
+                    <div class="solution-content">
+                        <p>当 \(n \to \infty\) 时，增加或减少一个 \(x\) 的幂次产生相同结果。所以：</p>
+                        \[x^{x^{x^{x^{\cdots}}}} = x^{(x^{x^{x^{\cdots}}})} = x^2 = 2 \Rightarrow x = \sqrt{2}\]
+                    </div>
+                </details>
+            </section>
+
+            <!-- 2.3 跳出思维定式 -->
+            <section id="section-2-3">
+                <h2>2.3 跳出思维定式（Thinking Out of the Box）</h2>
+
+                <h3 class="problem-title">盒子装砖（Box Packing）</h3>
+                <div class="problem">
+                    <p>你能把53块尺寸为 \(1 \times 1 \times 4\) 的砖放入一个 \(6 \times 6 \times 6\) 的盒子中吗？</p>
+                </div>
+                <details class="solution">
+                    <summary>💡 点击查看解答</summary>
+                    <div class="solution-content">
+                        <p>53块砖体积为212，小于盒子体积216。但仍然不可能。</p>
+                        <p>想象 \(6\times6\times6\) 的盒子由27个 \(2\times2\times2\) 的小立方体组成，交替涂成黑白色（14黑13白或13黑14白）。任何 \(1\times1\times4\) 的砖，一半在黑色立方体中，一半在白色立方体中。每个 \(2\times2\times2\) 的立方体最多被4块砖使用。</p>
+                        <p>对于有13个立方体的那种颜色，最多只能放 \(13 \times 4 = 52\) 块砖。第53块砖没有地方放。所以<strong>不能</strong>把53块砖放入盒子。</p>
+                    </div>
+                </details>
+
+                <h3 class="problem-title">日历骰子（Calendar Cubes）</h3>
+                <div class="problem">
+                    <p>定制两个骰子，在面上放置个位数字，使每天早上可以排列两个正面显示当月日期（01-31）。可以切换骰子顺序。每个骰子六个面各放什么数字？</p>
+                </div>
+                <details class="solution">
+                    <summary>💡 点击查看解答</summary>
+                    <div class="solution-content">
+                        <p>天数包括11和22，所以两个骰子都必须有1和2。需要两个骰子都有0（否则无法表示所有个位数日期01-09）。</p>
+                        <p>剩下7个数字（3-9）但只有6个面。关键：<strong>把6翻转当作9使用</strong>，因为它们不需要同时出现！</p>
+                        <table>
+                            <tr><th>骰子一</th><td>0</td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td></tr>
+                            <tr><th>骰子二</th><td>0</td><td>1</td><td>2</td><td>6</td><td>7</td><td>8</td></tr>
+                        </table>
+                    </div>
+                </details>
+
+                <h3 class="problem-title">门与工作（Door to Offer）</h3>
+                <div class="problem">
+                    <p>两扇门，一扇通向工作机会，一扇通向出口。每扇门前有一个守卫，一个总说谎，一个总说实话。你只能问一个守卫一个是/否问题。你会问什么？</p>
+                </div>
+                <details class="solution">
+                    <summary>💡 点击查看解答</summary>
+                    <div class="solution-content">
+                        <p>问："另一个守卫会说你守的是通向工作的门吗？"</p>
+                        <ul>
+                            <li>如果回答<strong>是</strong>→选择另一扇门</li>
+                            <li>如果回答<strong>否</strong>→选择这扇门</li>
+                        </ul>
+                        <p>原理：问题涉及两个守卫，经过双重否定/肯定，无论问谁，"是"都意味着那扇门不是工作门，"否"都意味着那扇门是工作门。</p>
+                    </div>
+                </details>
+
+                <h3 class="problem-title">消息传递（Message Delivery）</h3>
+                <div class="problem">
+                    <p>你需要通过不安全的快递与同事通信。文件放在挂锁箱中发送，未上锁的箱子里的东西会丢失。你和同事各有自己的挂锁（只有自己有钥匙）。如何安全发送文件？</p>
+                </div>
+                <details class="solution">
+                    <summary>💡 点击查看解答</summary>
+                    <div class="solution-content">
+                        <ol>
+                            <li>你把文件放入箱子，用你的锁锁上，寄给同事</li>
+                            <li>同事收到后，在箱子上加上他的锁，寄回给你</li>
+                            <li>你移除自己的锁，寄回给同事</li>
+                            <li>同事打开自己的锁，取出文件</li>
+                        </ol>
+                        <div class="hint"><strong>提示：</strong>你可以在箱子上放不止一把锁。</div>
+                    </div>
+                </details>
+
+                <h3 class="problem-title">最后一个球（Last Ball）</h3>
+                <div class="problem">
+                    <p>袋子里有20个蓝色球和14个红色球。每次随机取出两个球不放回：两球同色则加一个蓝球；不同色则加一个红球。有无限供应的球。最后一个球是什么颜色？如果是20蓝13红呢？</p>
+                </div>
+                <details class="solution">
+                    <summary>💡 点击查看解答</summary>
+                    <div class="solution-content">
+                        <p>分析红球数量变化：</p>
+                        <ul>
+                            <li>两蓝：\((B,R) \to (B-1, R)\)，红球不变</li>
+                            <li>两红：\((B,R) \to (B+1, R-2)\)，红球减2</li>
+                            <li>一红一蓝：\((B,R) \to (B-1, R)\)，红球不变</li>
+                        </ul>
+                        <p>红球数量要么不变要么减2，所以红球的奇偶性永远不变。从14（偶数）开始，红球不可能变为1（奇数），最后一个球必须是<strong>蓝色</strong>。从13（奇数）开始，最后一个球必须是<strong>红色</strong>。</p>
+                    </div>
+                </details>
+
+                <h3 class="problem-title">灯开关（Light Switches）</h3>
+                <div class="problem">
+                    <p>房间里一个灯泡，外面四个开关（当前全关），只有一个控制灯泡。你需要进入房间几次才能确定哪个开关控制灯泡？</p>
+                </div>
+                <details class="solution">
+                    <summary>💡 点击查看解答</summary>
+                    <div class="solution-content">
+                        <p>利用灯泡的两个二元属性：亮/灭 和 冷/热，\(2\times2=4\) 种组合区分4个开关。</p>
+                        <p>操作：打开开关1和2→等待→关掉2、打开3→进入房间：</p>
+                        <ul>
+                            <li>亮且热 → 开关1</li>
+                            <li>灭且热 → 开关2</li>
+                            <li>亮且冷 → 开关3</li>
+                            <li>灭且冷 → 开关4</li>
+                        </ul>
+                        <p>只需进入<strong>1次</strong>。</p>
+                    </div>
+                </details>
+
+                <h3 class="problem-title">量化分析师的薪资（Quant Salary）</h3>
+                <div class="problem">
+                    <p>八位来自不同银行的量化分析师想知道平均薪资，但每人都不愿透露自己的薪资。如何在不知道他人薪资的情况下计算平均值？</p>
+                </div>
+                <details class="solution">
+                    <summary>💡 点击查看解答</summary>
+                    <div class="solution-content">
+                        <p>第一人选一个随机数，加上自己薪资传给第二人。第二人加上自己薪资传给第三人……第八人加完传回第一人。第一人减去随机数再除以8即为平均薪资。</p>
+                        <p>类似策略在金融数据共享中有实际应用：第三方提供商通过添加随机ID来保护参与者的基金持仓匿名性。</p>
+                    </div>
+                </details>
+            </section>
+
+            <!-- 2.4 对称性的应用 -->
+            <section id="section-2-4">
+                <h2>2.4 对称性的应用（Application of Symmetry）</h2>
+
+                <h3 class="problem-title">硬币堆（Coin Piles）</h3>
+                <div class="problem">
+                    <p>你被蒙住眼睛，房间地板上有1000枚硬币，980枚反面朝上，20枚正面朝上。你能否将硬币分成两堆，保证两堆有相同数量的正面？你无法触摸辨别哪面朝上，但可以翻转任意硬币。</p>
+                </div>
+                <details class="solution">
+                    <summary>💡 点击查看解答</summary>
+                    <div class="solution-content">
+                        <p>设第一堆有 \(n\) 枚硬币，其中 \(m\) 枚正面朝上，则第二堆有 \(20-m\) 枚正面朝上。</p>
+                        <p>如果翻转第一堆所有硬币，正面数变为 \(n-m\)。需要 \(n-m = 20-m\)，解得 \(n=20\)。</p>
+                        <p><strong>答案：随机取20枚硬币，全部翻转。</strong>无论这20枚中原来有多少正面（设为 \(m\)），翻转后正面数为 \(20-m\)，正好等于另外980枚中的正面数 \(20-m\)。</p>
+                    </div>
+                </details>
+
+                <h3 class="problem-title">标签错误的袋子（Mislabeled Bags）</h3>
+                <div class="problem">
+                    <p>三个水果袋子分别装有苹果、橘子、混合。每个袋子上有标签但<strong>所有标签都是错的</strong>。通过取出最少数量的水果来识别所有袋子？</p>
+                </div>
+                <details class="solution">
+                    <summary>💡 点击查看解答</summary>
+                    <div class="solution-content">
+                        <p>从标有"混合"的袋子取出一个水果。由于标签错误，这个袋子不可能是混合。</p>
+                        <ul>
+                            <li>若取出橘子：该袋是橘子袋。标有"苹果"的不能是苹果，也不是橘子，所以是混合。标有"橘子"的是苹果。</li>
+                            <li>若取出苹果：该袋是苹果袋。标有"橘子"的是混合。标有"苹果"的是橘子。</li>
+                        </ul>
+                        <p>只需<strong>1次取出</strong>。</p>
+                    </div>
+                </details>
+
+                <h3 class="problem-title">智者（Wise Men）</h3>
+                <div class="problem">
+                    <p>苏丹抓了50个智者。有一个杯子（当前杯口朝下）。每分钟随机叫一个智者，可选择翻转杯子或不动。可被叫无限多次。当某人正确宣布所有人都已被叫过至少一次时全部获释，否则全部处死。只能在分开前沟通一次。设计策略。</p>
+                </div>
+                <details class="solution">
+                    <summary>💡 点击查看解答</summary>
+                    <div class="solution-content">
+                        <p>指定一个"发言人"，利用对称性——其他49人行为相同，发言人行为不同。</p>
+                        <p><strong>49人的规则：</strong>第一次看到杯口朝下时翻转为朝上（只翻转一次）。否则什么都不做。</p>
+                        <p><strong>发言人的规则：</strong>每次看到杯子朝上就翻转为朝下。当他做了第49次翻转时，宣布所有人都已被叫过。</p>
+                    </div>
+                </details>
+            </section>
+
+            <!-- 2.5 级数求和 -->
+            <section id="section-2-5">
+                <h2>2.5 级数求和（Series Summation）</h2>
+                <p>高斯求和的方法可推广为：\(\sum_{n=1}^{N} n = \frac{N(N+1)}{2}\)，平方和：\(\sum_{n=1}^{N} n^2 = \frac{N(N+1)(2N+1)}{6}\)。</p>
+
+                <h3 class="problem-title">时钟碎片（Clock Pieces）</h3>
+                <div class="problem">
+                    <p>时钟（顺时针编号1-12）从墙上掉落摔成三块，每块数字之和相等。每块上的数字是什么？（碎片必须是连续的弧形。）</p>
+                </div>
+                <details class="solution">
+                    <summary>💡 点击查看解答</summary>
+                    <div class="solution-content">
+                        <p>\(\sum_{n=1}^{12} n = 78\)，每块之和为26。注意12和1在时钟上是连续的！</p>
+                        <ul>
+                            <li>第一块：5、6、7、8（和为26）</li>
+                            <li>第二块：11、12、1、2（和为26）</li>
+                            <li>第三块：3、4、9、10（和为26）</li>
+                        </ul>
+                    </div>
+                </details>
+
+                <h3 class="problem-title">缺失的整数（Missing Integers）</h3>
+                <div class="problem">
+                    <p>从1到100中有98个不同整数，找出两个缺失整数的好方法是什么？</p>
+                </div>
+                <details class="solution">
+                    <summary>💡 点击查看解答</summary>
+                    <div class="solution-content">
+                        <p>设缺失整数为 \(x\) 和 \(y\)，已知整数为 \(z_1,...,z_{98}\)。建立两个方程：</p>
+                        \[x + y = \frac{100 \times 101}{2} - \sum_{i=1}^{98} z_i\]
+                        \[x^2 + y^2 = \frac{100 \times 101 \times 201}{6} - \sum_{i=1}^{98} z_i^2\]
+                        <p>两个方程两个未知数，可以唯一确定 \(x\) 和 \(y\)。算法复杂度 \(O(n)\)。</p>
+                    </div>
+                </details>
+
+                <h3 class="problem-title">假币 I（Counterfeit Coins I）</h3>
+                <div class="problem">
+                    <p>10个袋子各装100枚硬币。除一个假币袋（硬币重9g或11g）外，其余硬币重10g。只用电子秤称一次，能否找出假币袋？</p>
+                </div>
+                <details class="solution">
+                    <summary>💡 点击查看解答</summary>
+                    <div class="solution-content">
+                        <p>从第 \(i\) 个袋子取 \(i\) 枚硬币（\(i=1,...,10\)），共55枚。正常应重550g。</p>
+                        <p>若第 \(i\) 个袋子是假币袋，总重为 \(550 \pm i\)。由于各 \(i\) 不同，一次称量即可确定假币袋及轻重。</p>
+                    </div>
+                </details>
+
+                <h3 class="problem-title">玻璃球（Glass Balls）</h3>
+                <div class="problem">
+                    <p>两个玻璃球，100层楼。球从低于 \(X\) 层扔不碎，从 \(X\) 层及以上扔必碎。求确定 \(X\) 的最坏情况最少投掷次数策略。</p>
+                </div>
+                <details class="solution">
+                    <summary>💡 点击查看解答</summary>
+                    <div class="solution-content">
+                        <p>设最多投掷 \(N\) 次。第一次从第 \(N\) 层试。若碎，用第二球逐层试1到 \(N-1\)（最多 \(N-1\) 次）。若没碎，第二次从第 \(N+(N-1)\) 层试……</p>
+                        <p>两球 \(N\) 次能覆盖的楼层数：</p>
+                        \[N + (N-1) + \cdots + 1 = \frac{N(N+1)}{2} \geq 100\]
+                        <p>最小整数解 \(N = \mathbf{14}\)。从第14层开始，依次为第14、27、39、50、60、69、77、84、90、95、99、100层。</p>
+                    </div>
+                </details>
+            </section>
+
+            <!-- 2.6 鸽巢原理 -->
+            <section id="section-2-6">
+                <h2>2.6 鸽巢原理（The Pigeon Hole Principle）</h2>
+                <p>基本版本：如果有 \(n\) 个洞和多于 \(n\) 只鸽子，至少有一个洞中有不止一只鸽子。推广版本：如果有 \(n\) 个洞和至少 \(mn+1\) 只鸽子，至少 \(m+1\) 只鸽子必须共享一个洞。</p>
+
+                <h3 class="problem-title">配对袜子（Matching Socks）</h3>
+                <div class="problem">
+                    <p>抽屉里有2只红色、20只黄色、31只蓝色袜子。随机抓取，最少抓多少只才能保证得到一对同色的？</p>
+                </div>
+                <details class="solution">
+                    <summary>💡 点击查看解答</summary>
+                    <div class="solution-content">
+                        <p>3种颜色（3个鸽巢），根据鸽巢原理需要 \(3 + 1 = \mathbf{4}\) 只袜子来保证至少两只同色。</p>
+                    </div>
+                </details>
+
+                <h3 class="problem-title">握手（Handshakes）</h3>
+                <div class="problem">
+                    <p>你被邀请参加一个25位团队成员的欢迎派对。每位成员都与你握手。能否肯定至少有两个人与完全相同数量的人握过手？</p>
+                </div>
+                <details class="solution">
+                    <summary>💡 点击查看解答</summary>
+                    <div class="solution-content">
+                        <p>派对上有26人，每人与1到25个人握手（因为每人都与你握手）。26只鸽子，25个洞。根据鸽巢原理，<strong>至少两人</strong>与完全相同数量的人握过手。</p>
+                    </div>
+                </details>
+
+                <h3 class="problem-title">我们以前见过吗？（Have We Met Before?）</h3>
+                <div class="problem">
+                    <p>证明：如果一个派对上有6个人，那么要么至少3个人互相认识，要么至少3个人互为陌生人。</p>
+                </div>
+                <details class="solution">
+                    <summary>💡 点击查看解答</summary>
+                    <div class="solution-content">
+                        <p>设你是第6人。在其余5人中，根据鸽巢原理，要么至少3人以前见过你，要么至少3人没见过你。</p>
+                        <p><strong>情况1（至少3人见过你）：</strong>若其中两人也互相见过，则你和这两人（3人）互相认识。若其中任何两人都没见过，则这3人（或更多）互不认识。</p>
+                        <p><strong>情况2（至少3人没见过你）：</strong>若其中两人也互不认识，则你和这两人（3人）互不认识。若其中所有人都互相认识，则这3人互相认识。</p>
+                        <p>无论哪种情况，结论都成立。</p>
+                    </div>
+                </details>
+
+                <h3 class="problem-title">正方形上的蚂蚁（Ants on a Square）</h3>
+                <div class="problem">
+                    <p>边长为1的正方形上有51只蚂蚁。用半径为1/7的玻璃杯，能否放在某位置保证覆盖至少3只蚂蚁？</p>
+                </div>
+                <details class="solution">
+                    <summary>💡 点击查看解答</summary>
+                    <div class="solution-content">
+                        <p>将正方形分成 \(5\times5 = 25\) 个小正方形（边长1/5）。51只蚂蚁分到25个区域，由推广鸽巢原理，至少一个区域有 \(\geq 3\) 只蚂蚁。</p>
+                        <p>半径为1/7的圆能覆盖边长为1/5的正方形吗？圆能覆盖的最大正方形边长为 \(\sqrt{2}r = \sqrt{2}/7 \approx 0.202 > 0.2 = 1/5\)。✓</p>
+                        <p>所以<strong>能</strong>保证覆盖至少3只蚂蚁。</p>
+                    </div>
+                </details>
+
+                <h3 class="problem-title">假币 II（Counterfeit Coins II）</h3>
+                <div class="problem">
+                    <p>5个袋子各装100枚硬币。硬币重9g、10g或11g。每个袋子内硬币相同但不知道是哪种。用电子秤称几次能确定每个袋子的硬币类型？</p>
+                </div>
+                <details class="solution">
+                    <summary>💡 点击查看解答</summary>
+                    <div class="solution-content">
+                        <p>将三种重量编码为 -1、0、1（减去平均值10）。</p>
+                        <p>2个袋子时：从袋子2取3枚，总和范围-4到4（9个值）覆盖 \(3^2=9\) 种组合。</p>
+                        <p>3个袋子时：从袋子3取9枚，覆盖 \(3^3=27\) 种组合。</p>
+                        <p>规律：从第 \(k\) 个袋子取 \(3^{k-1}\) 枚。5个袋子分别取 <strong>1、3、9、27、81</strong> 枚硬币，<strong>一次称量</strong>即可确定所有袋子的硬币类型。</p>
+                    </div>
+                </details>
+            </section>
+
+            <!-- 2.7 模运算 -->
+            <section id="section-2-7">
+                <h2>2.7 模运算（Modular Arithmetic）</h2>
+                <p>模运算 \(x \mod y\) 求 \(x\) 除以 \(y\) 的余数。重要性质：若 \(x_1 \mod y = x_2 \mod y\)，则 \((x_1 - x_2) \mod y = 0\)。</p>
+
+                <h3 class="problem-title">囚犯问题（Prisoner Problem）</h3>
+                <div class="problem">
+                    <p>100名囚犯，每人被戴红色或蓝色帽子（随机分配）。每人可看到其他所有人的帽子但看不到自己的。不能沟通。按随机顺序大声猜测自己帽子颜色（所有人都能听到）。猜对则获释，否则被处死。制定最佳策略，能保证救多少囚犯？</p>
+                </div>
+                <details class="solution">
+                    <summary>💡 点击查看解答</summary>
+                    <div class="solution-content">
+                        <p>至少<strong>99名</strong>囚犯可以被救。</p>
+                        <p>策略：第一个囚犯看到其他99人的帽子。若红色帽子数量是奇数，他宣布红色；否则宣布蓝色。他有1/2概率猜对。</p>
+                        <p>其他99人可以结合第一人给出的"红色帽子奇偶性"信息，加上自己看到的其余98人的帽子颜色，推断出自己的帽子颜色。</p>
+                        <p><strong>扩展到3种颜色：</strong>使用评分系统（红=0，绿=1，蓝=2）。第一人计算其余99人的总分 \(\mod 3\)，通过宣布对应颜色来传递余数信息。其他人据此推断自己的颜色。仍能保证救99人（第一人1/3概率存活）。</p>
+                    </div>
+                </details>
+
+                <h3 class="problem-title">9的整除性（Division by 9）</h3>
+                <div class="problem">
+                    <p>给定任意整数，想出一个规则判断它能否被9整除，并证明。</p>
+                </div>
+                <details class="solution">
+                    <summary>💡 点击查看解答</summary>
+                    <div class="solution-content">
+                        <p><strong>规则：</strong>各数位之和能被9整除，则该数能被9整除。</p>
+                        <p><strong>证明：</strong>设 \(a = a_n 10^n + a_{n-1} 10^{n-1} + \cdots + a_1 \cdot 10 + a_0\)。令 \(b = a - (a_n + a_{n-1} + \cdots + a_0)\)，则：</p>
+                        \[b = a_n(10^n - 1) + a_{n-1}(10^{n-1} - 1) + \cdots + a_1(10 - 1)\]
+                        <p>由于所有 \(10^k - 1\)（如9, 99, 999...）都能被9整除，所以 \(b\) 能被9整除。若数位之和 \(s = 9x\)，则 \(a = b + s\) 也能被9整除。</p>
+                        <p>（类似地，\((-1)^n a_n + (-1)^{n-1} a_{n-1} + \cdots + a_0\) 能被11整除是 \(a\) 能被11整除的充要条件。）</p>
+                    </div>
+                </details>
+
+                <h3 class="problem-title">变色龙的颜色（Chameleon Colors）</h3>
+                <div class="problem">
+                    <p>一个岛上有13只红色、15只绿色、17只蓝色变色龙。每次两只不同颜色的变色龙相遇，它们都变成第三种颜色。所有变色龙能否变成同一种颜色？</p>
+                </div>
+                <details class="solution">
+                    <summary>💡 点击查看解答</summary>
+                    <div class="solution-content">
+                        <p><strong>不可能。</strong></p>
+                        <p>要让所有变色龙变成一种颜色，在某个中间阶段必须有两种颜色的数量相同（最终阶段前一步必为 \((1,1,x)\)）。</p>
+                        <p>初始状态：\(13 \mod 3 = 1\)，\(15 \mod 3 = 0\)，\(17 \mod 3 = 2\)。</p>
+                        <p>分析三种可能的相遇，任何一次相遇后：</p>
+                        \[(3x, 3y+1, 3z+2) \to \text{仍然保持 } (3x', 3y'+1, 3z'+2) \text{ 的模式}\]
+                        <p>模3的模式被永远保持，永远不会有两种颜色的数量对3同余。因此无法使两种颜色数量相等，也就不可能让所有变色龙变成同一种颜色。</p>
+                    </div>
+                </details>
+            </section>
+
+            <!-- 2.8 数学归纳法 -->
+            <section id="section-2-8">
+                <h2>2.8 数学归纳法（Math Induction）</h2>
+                <p>归纳法证明的一般步骤：1. 定义谓词 \(P(n)\)；2. 证明基础情况；3. 证明 \(P(n) \Rightarrow P(n+1)\)（或强归纳法中 \(P(1),...,P(n) \Rightarrow P(n+1)\)）。</p>
+
+                <h3 class="problem-title">硬币分割问题（Coin Split Problem）</h3>
+                <div class="problem">
+                    <p>将1000枚硬币分成两堆（\(x\)和\(y\)枚），记乘积\(xy\)。继续分割每堆，累加所有乘积。重复直到所有堆只有1枚。最终总和是多少？证明答案与分割方式无关。</p>
+                </div>
+                <details class="solution">
+                    <summary>💡 点击查看解答</summary>
+                    <div class="solution-content">
+                        <p><strong>命题：</strong>对于 \(n\) 枚硬币，最终总和为 \(\frac{n(n-1)}{2}\)。</p>
+                        <p>递推关系：\(f(n) = x(n-x) + f(x) + f(n-x)\)</p>
+                        <p><strong>归纳证明：</strong>基础情况 \(f(2)=1, f(3)=3, f(4)=6\) 均满足。假设对 \(n=2,...,N-1\) 成立，则：</p>
+                        \[f(N) = x(N-x) + \frac{x(x-1)}{2} + \frac{(N-x)(N-x-1)}{2} = \frac{N(N-1)}{2}\]
+                        <p>对 \(n=1000\)：\(f(1000) = \frac{1000 \times 999}{2} = \mathbf{499500}\)。</p>
+                    </div>
+                </details>
+
+                <h3 class="problem-title">巧克力棒问题（Chocolate Bar Problem）</h3>
+                <div class="problem">
+                    <p>一个 \(6\times8\) 的巧克力棒（48个小方块）。每次将一个矩形掰成两个更小矩形。掰成48个单独小方块需要多少次？</p>
+                </div>
+                <details class="solution">
+                    <summary>💡 点击查看解答</summary>
+                    <div class="solution-content">
+                        <p><strong>答案：\(mn-1 = 47\) 次。</strong></p>
+                        <p><strong>简单论证：</strong>每次掰断，碎片数量增加1。开始1块，最终 \(mn\) 块，所以需要 \(mn-1\) 次。</p>
+                        <p><strong>归纳证明：</strong>基础情况 \(m\geq1, n=1\) 需 \(m-1\) 次。对一般 \(m\times n\)，无论沿行还是列掰断为两部分 \(m\times n_1\) 和 \(m\times(n-n_1)\)，总次数为 \(1+(mn_1-1)+(m(n-n_1)-1) = mn-1\)。</p>
+                    </div>
+                </details>
+
+                <h3 class="problem-title">环形赛道（Race Track）</h3>
+                <div class="problem">
+                    <p>单向环形赛道上随机放置 \(N\) 个汽油罐，总油量恰好够跑一圈。车初始油箱为空，可放在任意位置并沿途拾取汽油。是否总能选择一个起始位置使车能完成整圈？</p>
+                </div>
+                <details class="solution">
+                    <summary>💡 点击查看解答</summary>
+                    <div class="solution-content">
+                        <p><strong>是的，总能找到这样的起始位置。</strong></p>
+                        <p><strong>归纳证明：</strong>\(N=1\) 平凡。\(N=2\) 时，设两罐油量为 \(x_1, x_2\)（\(x_1+x_2=1\)），路段为 \(y_1, y_2\)（\(y_1+y_2=1\)）。必有 \(x_1\geq y_1\) 或 \(x_2\geq y_2\)，从满足条件的罐出发即可。</p>
+                        <p><strong>归纳步骤：</strong>对 \(N=n+1\)，必存在某个 \(i\) 使 \(x_i \geq y_i\)（否则总油量小于总路程）。将罐 \(i\) 和罐 \(i+1\) 合并为一个罐（油量 \(x_i+x_{i+1}\)），问题简化为 \(N=n\)，由归纳假设成立。</p>
+                        <p><strong>替代方法：</strong>用一辆油量充足的车从任意位置出发跑一圈，记录每个罐位置处加油前的油量。最低油量对应的位置就是空油箱出发的最佳起始位置。</p>
+                    </div>
+                </details>
+            </section>
+
+            <!-- 2.9 反证法 -->
+            <section id="section-2-9">
+                <h2>2.9 反证法（Proof by Contradiction）</h2>
+                <p>在反证法中，假设命题为假，然后推导出逻辑矛盾，从而证明命题为真。</p>
+
+                <h3 class="problem-title">无理数（Irrational Number）</h3>
+                <div class="problem">
+                    <p>证明 \(\sqrt{2}\) 是无理数。</p>
+                </div>
+                <details class="solution">
+                    <summary>💡 点击查看解答</summary>
+                    <div class="solution-content">
+                        <p>假设 \(\sqrt{2}\) 是有理数，可表示为最简分数 \(m/n\)（\(m,n\) 无公因子）。</p>
+                        <p>由 \(m/n = \sqrt{2}\) 得 \(m^2 = 2n^2\)。所以 \(m^2\) 是偶数，\(m\) 必须是偶数。设 \(m = 2x\)，则 \(4x^2 = 2n^2\)，即 \(n^2 = 2x^2\)，所以 \(n\) 也是偶数。</p>
+                        <p>\(m\) 和 \(n\) 都是偶数，与它们无公因子矛盾。因此 \(\sqrt{2}\) <strong>必须是无理数</strong>。</p>
+                    </div>
+                </details>
+
+                <h3 class="problem-title">彩虹帽子（Rainbow Hats）</h3>
+                <div class="problem">
+                    <p>7名囚犯，每人被戴一顶帽子（7种颜色之一，由刽子手决定）。每人可看到其他6人的帽子颜色但看不到自己的。不能沟通。每人写下猜测。若至少一人猜对则全部获释。是否存在保证获释的策略？</p>
+                </div>
+                <details class="solution">
+                    <summary>💡 点击查看解答</summary>
+                    <div class="solution-content">
+                        <p><strong>存在。</strong>将颜色编码为0-6。将囚犯标记为0-6。</p>
+                        <p><strong>策略：</strong>囚犯 \(i\) 选择猜测 \(g_i\)，使得：</p>
+                        \[\left(g_i + \sum_{k \neq i} x_k\right) \mod 7 = i\]
+                        <p>即每个囚犯假设所有帽子编码之和除以7的余数等于自己的编号，据此推算自己的帽子颜色。</p>
+                        <p><strong>反证法证明：</strong>如果对所有 \(i\) 都有 \(g_i \neq x_i\)，则 \(\left(\sum_{k=0}^{6} x_k\right) \mod 7 \neq 0, 1, 2, 3, 4, 5, 6\)。但余数必为0-6中的某个值，矛盾！所以至少有一个 \(g_i = x_i\)，保证获释。</p>
+                    </div>
+                </details>
+            </section>
+
+        </article>
+        <nav class="chapter-nav">
+            <a href="chapter1.html" class="prev">第1章 一般原则</a>
+            <a href="chapter3.html" class="next">第3章 微积分与线性代数</a>
+        </nav>
+    </main>
+
+    <script>
+        function toggleSidebar() {
+            document.querySelector('.sidebar').classList.toggle('active');
+            document.querySelector('.sidebar-overlay').classList.toggle('active');
+        }
+    </script>
+</body>
+</html>
