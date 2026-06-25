@@ -2,6 +2,8 @@
 
 A Practical Guide to Quantitative Finance Interviews 中文版 | 绿皮书中文版
 
+https://luciferbobo.github.io/A-Practical-Guide-to-Quantitative-Finance-Interviews-Chinese
+
 ## 声明
 
 本仓库内容仅为个人学习用途的中文翻译，不用于任何商业目的。
